@@ -1,0 +1,33 @@
+
+const theme = localStorage.getItem("theme")
+let default_theme
+
+if (theme) {
+    document.documentElement.setAttribute('data-theme', theme)
+} else {
+    default_theme = document.documentElement.getAttribute('data-default-theme')
+    document.documentElement.setAttribute('data-theme', default_theme)
+}
+document.addEventListener("DOMContentLoaded", () => {
+    if($('#themeSwitch').length !== 0) {
+        if (theme) {
+            document.querySelector('#themeSwitch').setAttribute("value", theme);
+            if (theme === 'dark') {
+                document.querySelector('#themeSwitch').setAttribute("checked", true);
+            } else {
+                document.querySelector('#themeSwitch').removeAttribute("checked")
+            }
+        } else {
+            localStorage.setItem("theme", default_theme)
+            document.querySelector('#themeSwitch').setAttribute("value", default_theme);
+            if (default_theme === 'dark') {
+                document.querySelector('#themeSwitch').setAttribute("checked", true);
+            } else {
+                document.querySelector('#themeSwitch').removeAttribute("checked")
+            }
+            // localStorage.setItem("theme", 'dark')
+            // document.querySelector('#themeSwitch').setAttribute("checked", true);
+            // document.querySelector('#themeSwitch').setAttribute("value", 'dark');
+        }
+    }
+})

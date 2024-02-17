@@ -1,0 +1,2253 @@
+
+var globalDNS = window.location.hostname;
+
+
+function marketPairs() {
+    var body = $('.trade-sidebar__content.trsb__content-sb').find('.trade-sidebar__content-body')
+    $.ajax({
+        url: `/get-pair-list`,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            $.each(data.data, function (index, value) {
+                //check if price on pair exist
+                if (value.price != false) {
+                    var temp = `<a href="${value.link}" class="trade-sidebar__body-row ${value.str_pair}">
+                            <div class="trade-sidebar__row-item">
+                                <div class="trade-sidebar__item-mark" trade-pair="${value.str_pair}">
+                                    <img class="tsi-mark_img tsi-mark_fill" src="/img/Star_2a.svg" alt="">
+                                    <img class="tsi-mark_img tsi-mark_bord" src="/img/Star_2.svg" alt="">
+                                </div>
+                                <span class="trade-sidebar__item-name">${value.first}</span>
+                                <span class="trade-sidebar__item-slesh">/</span>
+                                <span class="trade-sidebar__item-namep">${value.last}</span>
+                            </div>
+                            <div class="trade-sidebar__row-item trade-item_price trade-header__down">${value.price}</div>
+                        </a>`
+                    var element = $(temp);
+                    body.find('.lds-spinner').remove()
+                    body.append(element);
+                }
+            });
+
+        },
+        error: function (xhr, status, error) {
+            //console.log(xhr.responseText, status, error)
+        }
+    });
+}
+
+
+$(document).ready(function () {
+
+
+    $(document).on('click', '.hero__chat', function () {
+        $('.hero__tickets').fadeIn()
+    })
+    $(document).on("click", '.contact__chat', function () {
+        $('.hero__chat').trigger('click')
+    })
+    $(document).on('click', '.ticket__close', function () {
+        var ticketWrapper = $('.hero__tickets-wrapper')
+        $('.hero__tickets').fadeOut(100)
+    })
+
+
+    // for ticket select
+    $(document).on("click", ".ticket-field__drop", function () {
+        var va = $(this).find('.ticket__field-box');
+        var th = $(this);
+        if (!$(this).hasClass('active')) {
+            va.fadeIn();
+            th.addClass('active');
+        } else {
+            va.fadeOut();
+            th.removeClass('active');
+        }
+    });
+    $(document).mouseup(function (e) {
+        var div = $(".ticket-field__drop")
+        if ((!div.is(e.target) && div.has(e.target).length === 0)) {
+            $(".ticket-field__drop").removeClass("active")
+            $('.ticket__field-box').fadeOut()
+        }
+    });
+    $(document).on("click", '.ticket__field-item', function () {
+        var category = $(this).text()
+        var parent = $(this).parents(".ticket-field__drop")
+        parent.find(".ticket__field-input__text").text(category.toUpperCase())
+        parent.find(".ticket__field-input").val(category)
+    })
+    // end ticket select
+
+
+    // limit buy
+    $(document).on('submit', '.trade-gr_limit_buy', function (event) {
+        event.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            url: `/trade/limit/buy`,
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                $('.trade-gr_limit_buy').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_first)
+                $(".trade-graphics__switch-slider.slider_limit__buy").slider('option', 'max', parseFloat(data.balance_first.replace(/\s/g, '')))
+
+                $('.trade-gr_market_buy').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_first)
+                $(".trade-graphics__switch-slider.slider_market__buy").slider('option', 'max', parseFloat(data.balance_first.replace(/\s/g, '')))
+
+                $('.trade-gr_limit_sell').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_last)
+                $(".trade-graphics__switch-slider.slider_limit__sell").slider('option', 'max', data.balance_last)
+
+                $('.trade-gr_market_sell').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_last)
+                $(".trade-graphics__switch-slider.slider_market__sell").slider('option', 'max', data.balance_last)
+
+                $('.trade__page').find('.trade-table').find('.trade-table__tab[table-tab="1"]').find('.trade-table__tab-body').html(data.orders)
+                var timer
+                $('.trade_nms_success').addClass('active')
+                if (timer) {
+                    clearTimeout(timer);
+                }
+                timer = setTimeout(() => {
+                    $('.trade_nms_success').removeClass('active');
+                }, 4000);
+            },
+            error: function (xhr, status, error) {
+                //console.log(xhr.responseText);
+                var timer
+                $('.trade_nms_error').addClass('active')
+                $('.trade_nms_error').find('.trade_notification-text').html(jQuery.parseJSON(xhr.responseText).message);
+                if (timer) {
+                    clearTimeout(timer);
+                }
+                timer = setTimeout(() => {
+                    $('.trade_nms_error').removeClass('active').find('.trade_notification-text').html('');
+                }, 4000);
+                // $('.message-profile__error').text(jQuery.parseJSON(xhr.responseText).message).fadeIn()
+            }
+        });
+    });
+    // limit sell
+    $(document).on('submit', '.trade-gr_limit_sell', function (event) {
+        event.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            url: `/trade/limit/sell`,
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                $('.trade-gr_limit_buy').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_first)
+                $(".trade-graphics__switch-slider.slider_limit__buy").slider('option', 'max', parseFloat(data.balance_first.replace(/\s/g, '')))
+
+                $('.trade-gr_market_buy').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_first)
+                $(".trade-graphics__switch-slider.slider_market__buy").slider('option', 'max', parseFloat(data.balance_first.replace(/\s/g, '')))
+
+                $('.trade-gr_limit_sell').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_last)
+                $(".trade-graphics__switch-slider.slider_limit__sell").slider('option', 'max', data.balance_last)
+
+                $('.trade-gr_market_sell').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_last)
+                $(".trade-graphics__switch-slider.slider_market__sell").slider('option', 'max', data.balance_last)
+
+                $('.trade__page').find('.trade-table').find('.trade-table__tab[table-tab="1"]').find('.trade-table__tab-body').html(data.orders)
+
+                $('.trade_nms_success').addClass('active')
+            
+                if (timer) {
+                    clearTimeout(timer);
+                }
+                timer = setTimeout(() => {
+                    $('.trade_nms_success').removeClass('active');
+                }, 4000);
+            },
+            error: function (xhr, status, error) {
+                //console.log(xhr.responseText);
+                var timer
+                $('.trade_nms_error').addClass('active')
+                $('.trade_nms_error').find('.trade_notification-text').html(jQuery.parseJSON(xhr.responseText).message);
+                if (timer) {
+                    clearTimeout(timer);
+                }
+                timer = setTimeout(() => {
+                    $('.trade_nms_error').removeClass('active').find('.trade_notification-text').html('');
+                }, 4000);
+                // $('.message-profile__error').text(jQuery.parseJSON(xhr.responseText).message).fadeIn()
+            }
+        });
+    });
+
+    // market buy
+    $(document).on('submit', '.trade-gr_market_buy', function (event) {
+        event.preventDefault();
+        $('#submit_buy').prop('disabled', true);
+        var formData = $(this).serialize();
+        $.ajax({
+            url: `/trade/market/buy`,
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                $('.trade-gr_limit_buy').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_first)
+                $(".trade-graphics__switch-slider.slider_limit__buy").slider('option', 'max', parseFloat(data.balance_first.replace(/\s/g, '')))
+
+                $('.trade-gr_market_buy').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_first)
+                $(".trade-graphics__switch-slider.slider_market__buy").slider('option', 'max', parseFloat(data.balance_first.replace(/\s/g, '')))
+
+                $('.trade-gr_limit_sell').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_last)
+                $(".trade-graphics__switch-slider.slider_limit__sell").slider('option', 'max', data.balance_last)
+
+                $('.trade-gr_market_sell').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_last)
+                $(".trade-graphics__switch-slider.slider_market__sell").slider('option', 'max', data.balance_last)
+
+                $('.trade__page').find('.trade-table').find('.trade-table__tab[table-tab="2"]').find('.trade-table__tab-body').html(data.orders)
+                $('#submit_buy').prop('disabled', false);
+                var timer
+            
+                $('.trade_nms_success').addClass('active')
+                if (timer) {
+                    clearTimeout(timer);
+                }
+                timer = setTimeout(() => {
+                    $('.trade_nms_success').removeClass('active');
+                }, 4000);
+            },
+            error: function (xhr, status, error) {
+                //console.log(xhr.responseText);
+                $('#submit_buy').prop('disabled', false);
+                var timer
+                $('.trade_nms_error').addClass('active')
+                $('.trade_nms_error').find('.trade_notification-text').html(JSON.parse(xhr.responseText).message);
+                if (timer) {
+                    clearTimeout(timer);
+                }
+                timer = setTimeout(() => {
+                    $('.trade_nms_error').removeClass('active').find('.trade_notification-text').html('');
+                }, 4000);
+                // $('.message-profile__error').text(jQuery.parseJSON(xhr.responseText).message).fadeIn()
+            }
+        });
+    });
+    // market sell
+    $(document).on('submit', '.trade-gr_market_sell', function (event) {
+        event.preventDefault();
+        $('#submit_sell').prop('disabled', true);
+        var formData = $(this).serialize();
+        $.ajax({
+            url: `/trade/market/sell`,
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                $('.trade-gr_limit_buy').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_first)
+                $(".trade-graphics__switch-slider.slider_limit__buy").slider('option', 'max', parseFloat(data.balance_first.replace(/\s/g, '')))
+
+                $('.trade-gr_market_buy').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_first)
+                $(".trade-graphics__switch-slider.slider_market__buy").slider('option', 'max', parseFloat(data.balance_first.replace(/\s/g, '')))
+
+                $('.trade-gr_limit_sell').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_last)
+                $(".trade-graphics__switch-slider.slider_limit__sell").slider('option', 'max', data.balance_last)
+
+                $('.trade-gr_market_sell').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_last)
+                $(".trade-graphics__switch-slider.slider_market__sell").slider('option', 'max', data.balance_last)
+
+                $('.trade__page').find('.trade-table').find('.trade-table__tab[table-tab="2"]').find('.trade-table__tab-body').html(data.orders)
+                $('#submit_sell').prop('disabled', false);
+                var timer
+                $('.trade_nms_success').addClass('active')
+                if (timer) {
+                    clearTimeout(timer);
+                }
+                timer = setTimeout(() => {
+                    $('.trade_nms_success').removeClass('active');
+                }, 4000);
+            },
+            error: function (xhr, status, error) {
+                $('#submit_buy').prop('disabled', false);
+                //console.log(xhr.responseText);
+                var timer
+                $('.trade_nms_error').addClass('active')
+                $('.trade_nms_error').find('.trade_notification-text').html(jQuery.parseJSON(xhr.responseText).message);
+                if (timer) {
+                    clearTimeout(timer);
+                }
+                timer = setTimeout(() => {
+                    $('.trade_nms_error').removeClass('active').find('.trade_notification-text').html('');
+                }, 4000);
+                // $('.message-profile__error').text(jQuery.parseJSON(xhr.responseText).message).fadeIn()
+            }
+        });
+    });
+
+
+    // kyc
+    $(document).on('submit', '.kyc', function (event) {
+        event.preventDefault();
+        var formData = $(this).serialize();
+
+        $('.message-profile__succeed').fadeOut()
+        $('.message-profile__error').fadeOut()
+        $.ajax({
+            url: `/kyc`,
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                $('.message-profile__succeed').text(data.message).fadeIn()
+            },
+            error: function (xhr, status, error) {
+                $('.message-profile__error').text(jQuery.parseJSON(xhr.responseText).message).fadeIn()
+            }
+        });
+    });
+
+    // Promocode
+    $(document).on('submit', '.promo-code__form', function (event) {
+        event.preventDefault();
+        var formData = $(this).serialize();
+        var that = $(this)
+
+        $('.other_notification-danger').removeClass('active')
+        $('.other_notification-success').removeClass('active')
+
+        $(this).find("button").prop('disabled', true)
+        $(this).addClass("__running")
+        if ($(this).hasClass("__running")) {
+            $.ajax({
+                url: `/promo`,
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function (data) {
+
+                    $('.promo-code__input').val('')
+                    $('.other_notification-success').addClass('active')
+                    $('.other_notification-success .other_notification_mess').text(data.message)
+                    that.find("button").prop('disabled', false)
+                    that.removeClass("__running")
+                    setTimeout(() => {
+                        $('.other_notification-success').removeClass('active')
+                    }, 3000);
+                },
+                error: function (xhr, status, error) {
+                    $('.other_notification-danger').addClass('active')
+                    $('.other_notification-danger .other_notification_mess').text(jQuery.parseJSON(xhr.responseText).message)
+                    setTimeout(() => {
+                        $('.other_notification-danger').removeClass('active')
+                    }, 3000);
+                    that.find("button").prop('disabled', false)
+                    that.removeClass("__running")
+                }
+            });
+        }
+        else {
+            return
+        }
+    });
+
+
+    // Change name
+    $(document).on('submit', '.profile-change-name', function (event) {
+        event.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            url: `/change-login`,
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                $('.profile__user-name').html(data.login)
+            },
+            error: function (xhr, status, error) {
+                //console.log(xhr.responseText);
+            }
+        });
+    });
+    //Change password
+    $(document).on('submit', '.profile-change-password', function (event) {
+        event.preventDefault();
+        var formData = $(this).serialize();
+        $('.message-profile__succeed').fadeOut()
+        $('.message-profile__error').fadeOut()
+        $.ajax({
+            url: `/change-password`,
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                $('.message-profile__succeed').text(data.message).fadeIn()
+            },
+            error: function (xhr, status, error) {
+                //console.log(xhr.responseText);
+                $('.message-profile__error').text(jQuery.parseJSON(xhr.responseText).message).fadeIn()
+            }
+        });
+    });
+
+    // Staking
+    $(document).on("click", ".stake-drop", function () {
+        // $(".stake-drop").removeClass("active")
+        // $('.stake-drop__box').fadeOut()
+
+        var va = $(this).parents('.stake-drop-parent').find('.stake-drop__box');
+        var th = $(this);
+        if (!$(this).hasClass('active')) {
+            va.fadeIn();
+            th.addClass('active');
+        } else {
+            va.fadeOut();
+            th.removeClass('active');
+        }
+    });
+    $(document).mouseup(function (e) {
+        var div = $(".stake-drop-parent")
+        if ((!div.is(e.target) && div.has(e.target).length === 0)) {
+            $(".stake-drop").removeClass("active")
+            $('.stake-drop__box').fadeOut()
+        }
+    });
+
+    $(document).on('click', '.new-trade-table__btn', function () {
+        $(this).parents('.new-trade-table__btns').children().removeClass('active')
+        $(this).addClass('active')
+        var id = $(this).attr('data-id')
+        $(this).parents('.new-trade-table').find('.new-trade-table__wrapper').removeClass('active')
+        $(this).parents('.new-trade-table').find(`.new-trade-table__wrapper[data-id="${id}"]`).addClass('active')
+    })
+
+    $(".stake-drop__item").on("click", function () {
+        var name = $(this).find('.stake-drop__item-text').text()
+        var parent = $(this).parents(".stake-drop-parent").find(".stake-drop.active")
+        parent.find(".stake-drop__text").text(name.toUpperCase())
+        parent.find(".stake-drop__value").val(name.toUpperCase())
+
+        // add in parent img
+
+        $(this).parents('.stake-drop-parent').find('.stake-drop').removeClass('active')
+        $(this).parents('.stake-drop-parent').find('.stake-drop__box').fadeOut()
+
+        let balance = $(this).attr('data-balance')
+        $(this).parents('.wallet__stake-box').find('.stale-box__header-val').text(balance)
+
+        // update .stake-box__body-input
+        $('.stake-box__body-input').trigger('input')
+    })
+
+    $(document).ready(function () {
+        if ($('.stake-calc-val').length > 0) {
+            var min_val = Number($('.stake-calc-val').parents('.wallet__stake-body').find('.stake_min_val').text())
+            $('.stake-calc-val').val(min_val)
+        }
+    })
+
+    $('.calc-plus').on('click', function () {
+        var value = $(this).parents('.stake-calc-days').find('.stake-calc-val').val()
+        var maxValue = $(this).parents('.wallet__stake-body').find(".stake_max_val").text()
+        var maxMonth = Number(maxValue)
+        if (value < maxMonth) {
+            ++value
+        }
+        else {
+            return
+        }
+        $(this).parents('.stake-calc-days').find('.stake-calc-val').val(value)
+        $(this).parents('.stake-calc-days').find('.stake-calc-val').attr('value', value)
+    })
+    $('.calc-minus').on('click', function () {
+        var value = $(this).parents('.stake-calc-days').find('.stake-calc-val').val()
+        var minValue = $(this).parents('.wallet__stake-body').find(".stake_min_val").text()
+        var minMonth = Number(minValue)
+        if (value > minMonth) {
+            --value
+        }
+        else {
+            return
+        }
+        $(this).parents('.stake-calc-days').find('.stake-calc-val').val(value)
+        $(this).parents('.stake-calc-days').find('.stake-calc-val').attr('value', value)
+    })
+    // data for stake
+    let __dataForStake
+    if ($('.stake-box__body-input').length > 0) {
+        __dataForStake = JSON.parse($('.stake-box__body-input').attr('data-stake'))
+    }
+
+    $(document).on('submit', '.wallet__stake', function (event) {
+        event.preventDefault();
+
+        var formData = $(this).serialize();
+        var balance = $('.stale-box__header-val').html()
+        var val = $('.stake-box__body-input').val()
+        var result = balance - val
+        // hide message
+        $('.convert__message').fadeOut()
+
+        // calculate block
+        const inputVal = parseFloat($('.wallet__stake').find('.stake-box__body-input').val())
+        const selectedCoin = $('.wallet__stake').find('.stake-drop__value').val().toLowerCase()
+
+        if (__dataForStake[ selectedCoin ]) {
+            // text template errors
+            const errors = {
+                error_amount: `minimal ${__dataForStake[ selectedCoin ][ "min_amount" ]} amount!`
+            }
+            // if input value < min_amount of coin
+            if (inputVal < parseFloat(__dataForStake[ selectedCoin ][ "min_amount" ])) {
+                $('.convert__message').text(errors[ "error_amount" ]).fadeIn()
+                return
+            }
+        }
+
+        $.ajax({
+            url: `/staking`,
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                $('.locked-staking').html(data.html);
+                $('.stale-box__header-val').html(result)
+            },
+            error: function (xhr, status, error) {
+                var Error = jQuery.parseJSON(xhr.responseText);
+                $('.convert__message').text(Error.message).fadeIn()
+            }
+        });
+    });
+
+
+    $(document).on("input", ".stake-box__body-input", function () {
+        $('.convert__message').fadeOut()
+
+        let val = parseFloat($(this).val())
+        if ($(this).val() < 0 || $(this).val() === undefined || $(this).val() === '') {
+            val = 0
+        }
+        $(this).parents('.wallet__stake-header').find('.stake-box-crypto__val').text(val)
+
+        // get name coin
+        const selectedCoin = $(this).parents('.stake-box__body').find('.stake-drop__value').val().toLowerCase()
+        const days = $('.stake-calc-val').val()
+        const eachDayPercent = 2 * days
+        let received
+
+        if (selectedCoin) {
+            // calculate
+            let percent
+            if (__dataForStake[ selectedCoin ][ "to" ] != 0) {
+                percent = parseFloat(__dataForStake[ selectedCoin ][ "to" ]) / 100
+            }
+            else {
+                percent = 2 / 100
+            }
+
+            if (percent !== 0) {
+                received = ((val * percent) + val).toFixed(5)
+            }
+            else {
+                return
+            }
+        }
+        else {
+            $('.convert__message').text('selected coin!').fadeIn()
+            return
+        }
+
+        $(this).parents('.wallet__stake-header').find('.stake-box-crypto__received').text(received)
+    })
+
+
+    // Convert
+    $(document).on('submit', '.wallet__convert-form', function (event) {
+        event.preventDefault();
+        var path = $(this).attr('action')
+        var notifications = $('.wallet__convert-form').find('.convert__notifications')
+        var messageErrorEmpty = $('.message-pair__empty')
+        var messageNotFound = $('.message-pair__ntfound')
+
+        var coinFrom = $(this).find('.wallet__convert-box[data-type="from"] .wallet__convert-drop__value').val().toUpperCase()
+        var coinTo = $(this).find('.wallet__convert-box[data-type="to"] .wallet__convert-drop__value').val().toUpperCase()
+
+        messageNotFound.fadeOut()
+        messageErrorEmpty.fadeOut()
+
+        if ($('.wallet__convert-box__value').val() && $('.wallet__convert-drop__value').val()) {
+            var formData = $(this).serialize();
+            $('.wallet__convert-btn').attr('disabled', true)
+            $('.wallet__convert-btn').css('cursor', 'wait')
+
+            $.ajax({
+                url: path,
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function (data) {
+                    $('#convert-history').html(data.html);
+                    $('.wallet__convert-btn').attr('disabled', false)
+                    $('.wallet__convert-btn').css('cursor', 'pointer')
+                    updateBalanceConvert(coinFrom, coinTo)
+                    // getData()
+                    // getWithdrawTokens()
+
+                },
+                error: function (xhr, status, error) {
+                    //console.log(xhr.responseText);
+                    // messageNotFound.text(JSON.parse(xhr.responseText).message).fadeIn()
+                    $('.wallet__convert-btn').attr('disabled', false)
+                    $('.wallet__convert-btn').css('cursor', 'pointer')
+                }
+            });
+        }
+        else {
+            messageErrorEmpty.fadeIn()
+            return
+        }
+    });
+
+
+    // poppup transfer
+    $(document).on('submit', '.wallet__transfer-poppup .wallet__poppup-form', function (event) {
+        event.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            url: `/transfer-balance`,
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                getData()
+                getWithdrawTokens()
+            },
+            error: function (xhr, status, error) {
+                //console.log(xhr.responseText);
+            }
+        });
+        $('.wallet__transfer-poppup').removeClass('show-poppup')
+        $('.wallet__transfer-poppup').fadeOut()
+        $("body").removeClass('body__shadow')
+        $("body").css("overflow", "visible")
+    });
+    // ajax forms
+
+
+
+    // trade pair cookie
+
+    function setCookie(name, value) {
+        document.cookie = name + '=' + value;
+    }
+    function deleteCookie(name) {
+        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/trade;';
+    }
+
+    function getCookie(name) {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[ i ].trim();
+            var cookieParts = cookie.split('=');
+            var cookieName = cookieParts[ 0 ];
+            var cookieValue = cookieParts[ 1 ];
+            if (cookieName === name) {
+                return cookieValue;
+            }
+        }
+        return null;
+    }
+
+    $(document).on('input', '.overview-main__search-input', function (e) {
+        var search_coin = $(this).val().toLowerCase();
+        var list
+        var nameCoin
+
+
+        if ($(this).parents('.wallet__staking').length > 0) {
+            nameCoin = '.staking__table-text'
+            list = $(this).parents('.wallet__content').find('.staking__table .staking__table-body').children();
+        }
+        else {
+            nameCoin = '.table__value-asset__currency'
+            list = $(this).parents('.wallet__content').find('.asset-balances .asset-balance__table-body').children();
+        }
+
+        list.each(function (index, element) {
+            var elementCoinFrom = $(element).find(nameCoin).text().toLowerCase();
+            // if (elementCurrency.includes(search_pair)) {
+            if (elementCoinFrom.startsWith(search_coin)) {
+                $(element).removeClass('pair_hide');
+            } else {
+                $(element).addClass('pair_hide');
+            }
+        });
+    })
+    $(document).on('input', '#convert_search_coin.overview-main__search-input', function (e) {
+        var search_coin = $(this).val().toLowerCase();
+        var list
+        var nameCoin
+        list = $(".convert-items").children()
+
+        list.each(function (index, element) {
+            var elementCoinFrom = $(element).find('.convert-item__box[data-convert-type="from"] .convert_token_name').text().toLowerCase();
+            var elementCoinTo = $(element).find('.convert-item__box[data-convert-type="to"] .convert_token_name').text().toLowerCase();
+
+            if (elementCoinFrom.startsWith(search_coin) || elementCoinTo.startsWith(search_coin)) {
+                $(element).removeClass('pair_hide');
+            } else {
+                $(element).addClass('pair_hide');
+            }
+        });
+    })
+
+
+
+
+    $(document).on('click', '.trade-sidebar__search-close', function (e) {
+        e.preventDefault()
+        var list = $(this).parents('.trade-sidebar').find('.trade-sidebar__content-body').children();
+        list.each(function (index, element) {
+            $(element).removeClass('pair_hide');
+        });
+    })
+    $(document).on('input', '.trade-sidebar__search-input', function () {
+        var search_pair = $(this).val().toLowerCase();
+        var list = $(this).parents('.trade-sidebar').find('.trade-sidebar__content-body').children();
+
+        list.each(function (index, element) {
+            var elementCurrency = $(element).find('.trade-sidebar__item-name').text().toLowerCase();
+            var elementCurrencyTwo = $(element).find('.trade-sidebar__item-namep').text().toLowerCase();
+            // if (elementCurrency.includes(search_pair)) {
+            if (elementCurrency.startsWith(search_pair) || elementCurrencyTwo.startsWith(search_pair)) {
+                $(element).removeClass('pair_hide');
+            } else {
+                $(element).addClass('pair_hide');
+            }
+        });
+    });
+
+    $(document).on('click', '.favorite_action', function () {
+        var list = $(this).parents('.trade-sidebar').find('.trade-sidebar__content-body').children()
+        var wasFavorite = $(this).hasClass('favorite');
+
+        $(this).parents('.trade-sidebar__sb-scroll').children().removeClass('favorite')
+
+        list.removeClass('pair_hide');
+
+        if (wasFavorite) {
+            $(this).removeClass('favorite')
+            list.not('.favorite').removeClass('pair_hide');
+        }
+        else {
+            $(this).addClass('favorite')
+            list.not('.favorite').addClass('pair_hide');
+        }
+    })
+
+    $(document).on('click', '.favorite_curr', function () {
+        var currency = $(this).text().toLowerCase()
+        var list = $(this).parents('.trade-sidebar').find('.trade-sidebar__content-body').children()
+
+        var wasFavorite = $(this).hasClass('favorite');
+
+        $(this).parents('.trade-sidebar__sb-scroll').children().removeClass('favorite')
+
+        list.removeClass('pair_hide');
+
+        if (!wasFavorite) {
+            $(this).addClass('favorite')
+            list.each(function (index, element) {
+                var elementCurrency = $(element).find('.trade-sidebar__item-name').text().toLowerCase()
+                var elementCurrencyTwo = $(element).find('.trade-sidebar__item-namep').text().toLowerCase();
+
+                if ((currency !== elementCurrency) && (currency !== elementCurrencyTwo)) {
+                    $(element).addClass('pair_hide')
+                }
+                else {
+                    return true
+                }
+            });
+        }
+        else {
+            $(this).removeClass('favorite')
+            list.each(function (index, element) {
+                $(element).removeClass('pair_hide')
+            });
+        }
+    })
+
+    $(document).on('click', '.trade-sidebar__item-mark', function (e) {
+        e.preventDefault();
+
+        var pair = $(this).attr('trade-pair');
+        if (!getCookie(pair)) {
+            setCookie(pair, pair)
+            $(this).parents('.trade-sidebar__body-row').addClass('favorite')
+        }
+        else {
+            deleteCookie(pair)
+            $(this).parents('.trade-sidebar__body-row').removeClass('favorite')
+        }
+    })
+
+
+    $(document).on('click', '.trade_notification-close', function () {
+        $(this).parents('.trade_notification').removeClass('active')
+    })
+    $(document).ready(function () {
+        let scrollTop = $(window).scrollTop();
+        if (scrollTop >= 40) {
+            $(".header__wrapper ").addClass("header-shadow");
+        }
+    })
+    $(window).scroll(function () {
+        let scrollTop = $(window).scrollTop();
+        if (scrollTop >= 40) {
+            $(".header__wrapper").addClass("header-shadow");
+        }
+        else {
+            $(".header__wrapper").removeClass("header-shadow");
+        }
+    });
+    $(document).on("click", ".header__burger", function () {
+        var va = $('.header__mobile-menu');
+        var th = $(this);
+        if (!$(this).hasClass('active')) {
+            va.addClass('active');
+            th.addClass('active');
+            $('body').addClass('shadow-vw')
+        } else {
+            va.removeClass('active');
+            th.removeClass('active');
+            $('body').removeClass('shadow-vw')
+        }
+    });
+    $(document).on('click', '.shadow-vw', function () {
+        $('.header__mobile-menu').removeClass('active')
+        $('.header__burger').removeClass('active')
+        $('body').removeClass('shadow-vw')
+    })
+
+
+
+    // canvas - stars
+
+    if ($('#canvas').length > 0) {
+        var canvas = document.getElementById('canvas'),
+            ctx = canvas.getContext('2d'),
+            w = canvas.width = 600,
+            h = canvas.height = 500,
+
+            hue = 217,
+            stars = [],
+            count = 0,
+            maxStars = 1400;
+
+        var canvas2 = document.createElement('canvas'),
+            ctx2 = canvas2.getContext('2d');
+        canvas2.width = 100;
+        canvas2.height = 100;
+        var half = canvas2.width / 2,
+            gradient2 = ctx2.createRadialGradient(half, half, 0, half, half, half);
+        gradient2.addColorStop(0.025, '#fff');
+        gradient2.addColorStop(0.1, '#A9DFD8');
+        gradient2.addColorStop(0.25, '#A9DFD8');
+        gradient2.addColorStop(1, 'transparent');
+
+        ctx2.fillStyle = gradient2;
+        ctx2.beginPath();
+        ctx2.arc(half, half, half, 0, Math.PI * 2);
+        ctx2.fill();
+
+        // End cache
+
+        function random(min, max) {
+            if (arguments.length < 2) {
+                max = min;
+                min = 0;
+            }
+
+            if (min > max) {
+                var hold = max;
+                max = min;
+                min = hold;
+            }
+
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function maxOrbit(x, y) {
+            var max = Math.max(x, y),
+                diameter = Math.round(Math.sqrt(max * max + max * max));
+            return diameter / 2;
+        }
+
+        var Star = function () {
+
+            this.orbitRadius = random(maxOrbit(w, h));
+            this.radius = random(20, this.orbitRadius) / 20;
+            this.orbitX = w / 2;
+            this.orbitY = h / 2;
+            this.timePassed = random(0, maxStars);
+            this.speed = random(this.orbitRadius) / 50000;
+            this.alpha = random(2, 10) / 10;
+
+            count++;
+            stars[ count ] = this;
+        }
+
+        Star.prototype.draw = function () {
+            var x = Math.sin(this.timePassed) * this.orbitRadius + this.orbitX,
+                y = Math.cos(this.timePassed) * this.orbitRadius + this.orbitY,
+                twinkle = random(10);
+
+            if (twinkle === 1 && this.alpha > 0) {
+                this.alpha -= 0.05;
+            } else if (twinkle === 2 && this.alpha < 1) {
+                this.alpha += 0.05;
+            }
+
+            ctx.globalAlpha = this.alpha;
+            ctx.drawImage(canvas2, x - this.radius / 2, y - this.radius / 2, this.radius, this.radius);
+            this.timePassed += this.speed;
+        }
+
+        for (var i = 0; i < maxStars; i++) {
+            new Star();
+        }
+
+        function animation() {
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.globalAlpha = 0.8;
+            ctx.fillStyle = '#191B20';
+
+            ctx.fillRect(0, 0, w, h)
+
+            ctx.globalCompositeOperation = 'lighter';
+            for (var i = 1, l = stars.length; i < l; i++) {
+                stars[ i ].draw();
+            };
+
+            window.requestAnimationFrame(animation);
+        }
+
+        animation();
+    }
+
+
+    $(document).on('click', '.trade-sidebar__btn', function () {
+        var id = $(this).attr('data-tab')
+        $(this).parents('.trade-sidebar__btns').children().removeClass('active')
+        $(this).addClass('active')
+        $(this).parents('.trade-sidebar__wtab').find('.trade-sidebar__tabs').children().removeClass('active')
+        $(this).parents('.trade-sidebar__wtab').find(`.trade-sidebar__tab[data-tab="${id}"]`).addClass('active')
+    })
+
+
+
+
+    $('.card-body__field').on('click', function () {
+        $(this).find('input').focus();
+        $(this).addClass('card-field__focus');
+    });
+    $('.card-body__field').on('click', function () {
+        $('.card-body__field input').blur();
+        $(this).find('input').focus();
+        $('.card-body__field').removeClass('card-field__focus');
+        $(this).addClass('card-field__focus');
+    });
+    $('.card-body__field input').on('blur', function () {
+        $(this).closest('.card-body__field').removeClass('card-field__focus');
+    });
+
+
+    $(document).on("click", ".wallet__convert-drop", function () {
+        $(".wallet__convert-drop").not(this).removeClass("active")
+        $('.wallet__convert-drop__box').fadeOut()
+
+        var va = $(this).parents('.wallet__convert-drop-parent').find('.wallet__convert-drop__box');
+        var th = $(this);
+        if (!$(this).hasClass('active')) {
+            va.fadeIn();
+            th.addClass('active');
+        } else {
+            va.fadeOut();
+            th.removeClass('active');
+        }
+    });
+    $(document).mouseup(function (e) {
+        var div = $(".wallet__convert-drop-parent")
+        if ((!div.is(e.target) && div.has(e.target).length === 0)) {
+            $(".wallet__convert-drop").removeClass("active")
+            $('.wallet__convert-drop__box').fadeOut()
+        }
+    });
+
+
+    $(".wallet__convert-box__max").on("click", function () {
+        var balance = $(this).parents(".wallet__convert-box").find(".wallet-convert__balance-value").text()
+        $(this).parents(".wallet__convert-box").find(".wallet__convert-box__value").attr("value", balance)
+        $(this).parents(".wallet__convert-box").find(".wallet__convert-box__value").val(balance)
+        $(this).parents('.wallet__convert-box').find('.wallet__convert-box__value').trigger('input')
+    })
+
+    // $(".wallet__convert-box__value").on("input", function () {
+    //     var maxVal = $(this).attr('max')
+    //     var val = $(this).val()
+    //     if (val <= maxVal) {
+    //         $(this).attr("value", val)
+    //     }
+    // })
+
+    var convertPrice
+    var convertType
+
+    $(document).on("click", '.wallet__convert-drop__item', function () {
+        var form = $(this).parents('.wallet__convert-form')
+        var that = $(this)
+        var name = $(this).find('.wallet__convert-drop__item-text').text()
+        var balance = $(this).attr('data-balance')
+        $(this).parents('.wallet__convert-box__body').find('.wallet-convert__balance-value').text(balance)
+        var parent = $(this).parents(".wallet__convert-drop-parent").find(".wallet__convert-drop.active")
+        // add in parent img
+        parent.find('.wallet__convert-drop__coin').attr('src', `/img/coins/${name}.svg`)
+        parent.find(".wallet__convert-drop__text").text(name.toUpperCase())
+        parent.find(".wallet__convert-drop__value").val(name)
+        $(this).parents('.wallet__convert-drop-parent').find('.wallet__convert-drop').removeClass('active')
+        $(this).parents('.wallet__convert-drop-parent').find('.wallet__convert-drop__box').fadeOut()
+
+        var cFrom = $('.wallet__convert-box[data-type="from"]').find('.wallet__convert-drop__value').val().toUpperCase()
+        var cTo = $('.wallet__convert-box[data-type="to"]').find('.wallet__convert-drop__value').val().toUpperCase()
+
+        var notifications = $(this).parents('.wallet__convert-form').find('.convert__notifications')
+        var messageErrorPair = notifications.find('.message-pair__error')
+        var messageErrorHavent = notifications.find('.message-pair__havent')
+        var messageErrorEmpty = notifications.find('.message-pair__empty')
+
+        messageErrorPair.fadeOut()
+        messageErrorEmpty.fadeOut()
+        messageErrorHavent.fadeOut()
+
+        if (cFrom && cTo) {
+            fetch(`/api/get-price?token_from=${cFrom}&token_to=${cTo}`)
+                .then(response => {
+                    if (!response.ok) {
+                        messageErrorHavent.fadeIn();
+                        form.find('.wallet__convert-btn').addClass('btn-disabled').prop('disabled', true)
+                    }
+                    else {
+                        form.find('.wallet__convert-btn').removeClass('btn-disabled').prop('disabled', false)
+                        return response.json();
+                    }
+                })
+                .then(data => {
+                    convertPrice = data.price;
+                    convertType = data.type;
+                    if ((convertType != 'none') && (convertType != 'first') && (convertType != 'last')) {
+                        messageErrorHavent.fadeIn();
+                        form.find('.wallet__convert-btn').addClass('btn-disabled').prop('disabled', true)
+                    }
+                    else {
+                        // console.log(that, that.parents('.wallet__convert-box').attr('data-type'));
+                        that.parents('.wallet__convert-box-parent').find('.wallet__convert-box__value').trigger('input')
+                    }
+                })
+                .catch(() => {
+                    messageErrorHavent.fadeIn();
+                    form.find('.wallet__convert-btn').addClass('btn-disabled').prop('disabled', true)
+                });
+        }
+        else {
+            messageErrorPair.fadeIn()
+            form.find('.wallet__convert-btn').addClass('btn-disabled').prop('disabled', true)
+        }
+    })
+
+    $(document).on('input', '.wallet__convert-box__value', function () {
+        var _parent = $(this).parents('.wallet__convert-form')
+        var fromInput = _parent.find('.wallet__convert-box__value[name="amount_from"]')
+        var toInput = _parent.find('.wallet__convert-box__value[name="amount_to"]')
+        var type = $(this).parents('.wallet__convert-box').attr('data-type')
+
+        var thisVal = $(this).val()
+
+        if ((fromInput.val() != '') || (toInput.val() != '')) {
+            // $(this).val($(this).val())
+            if (type === 'from') {
+                if (convertType === 'first') {
+                    var value = (thisVal * convertPrice).toFixed(5)
+                    toInput.val(value)
+                }
+                if (convertType === 'last') {
+                    var value = (thisVal / convertPrice).toFixed(5)
+                    toInput.val(value)
+                }
+                if (convertType === 'none') {
+                    var value = (thisVal * convertPrice).toFixed(5)
+                    toInput.val(value)
+                }
+            }
+            if (type === 'to') {
+                if (convertType === 'first') {
+                    var value = (thisVal / convertPrice).toFixed(5)
+                    fromInput.val(value)
+                }
+                if (convertType === 'last') {
+                    var value = (thisVal * convertPrice).toFixed(5)
+                    fromInput.val(value)
+                }
+                if (convertType === 'none') {
+                    var value = (thisVal * convertPrice).toFixed(5)
+                    fromInput.val(value)
+                }
+            }
+        }
+        else
+            return;
+    })
+
+    $('.alert-close').on('click', function () {
+        if ($(this).parents('.other_notification-danger.alert').length < 1) {
+            $(this).parents('.alert').removeClass('show')
+            $(this).parents('.alert').css('display', 'none')
+        }
+    })
+    $('.other_notification-danger .alert-close').on('click', function () {
+        $(this).parents('.alert').removeClass('active')
+    })
+    $('.other_notification-success .alert-close').on('click', function () {
+        $(this).parents('.alert').removeClass('active')
+    })
+
+    function setWalletCoinFromTable(element, forPoppup) {
+        const coinName = $(element).parents('.asset-balance__table-row').find('.table__value-asset__currency').text().toLowerCase()
+        const foundCoin = forPoppup.find('.wallet_coinDrop .poppup__field-list').children('.poppup__field-item').filter(function () {
+            if ($(this).find('.poppup__field-item-text').text().toLowerCase() == coinName) {
+                return $(this)
+            }
+        })
+        $(foundCoin).parents('.poppup__field-box').css('visibility', 'hidden').css('z-index', '-1')
+        $(foundCoin).trigger('click')
+        $(foundCoin).parents('.poppup__field-box').fadeOut(2)
+        $(foundCoin).parents('.wallet_coinDrop').removeClass('active')
+        setTimeout(() => {
+            $(foundCoin).parents('.poppup__field-box').css('visibility', 'visible').css('z-index', '2')
+        }, 500)
+    }
+    // function clearInputValues() {
+    //     $('input.clearable').val('');
+    // }
+    $(document).on("click", '.wallet__transfer', function (e) {
+        e.preventDefault()
+        $(".wallet__transfer-poppup").addClass("show-poppup")
+        $(".wallet__transfer-poppup").fadeIn(100)
+        $("body").addClass('body__shadow')
+        $("body").css("overflow", "hidden")
+
+        if ($(e.target).parents('.asset-balance__table-row').length > 0) {
+            setWalletCoinFromTable($(e.target), $(".wallet__transfer-poppup"))
+        }
+    })
+    $(document).on("click", '.header__transfer', function (e) {
+        e.preventDefault()
+        $(".wallet__transfer-poppup").addClass("show-poppup")
+        $(".wallet__transfer-poppup").fadeIn(100)
+        $("body").addClass('body__shadow')
+        $("body").css("overflow", "hidden")
+    })
+    $(document).on("click", '.wallet__withdraw', function (e) {
+        e.preventDefault()
+        $(".wallet__withdraw-poppup").addClass("show-poppup")
+        $(".wallet__withdraw-poppup").fadeIn(100)
+        $("body").addClass('body__shadow')
+        $("body").css("overflow", "hidden")
+
+        if ($(e.target).parents('.asset-balance__table-row').length > 0) {
+            setWalletCoinFromTable($(e.target), $(".wallet__withdraw-poppup"))
+        }
+    })
+    $(document).on("click", '.wallet__gift', function (e) {
+        e.preventDefault()
+        $(".wallet__gift-poppup").addClass("show-poppup")
+        $(".wallet__gift-poppup").fadeIn(100)
+        $("body").addClass('body__shadow')
+        $("body").css("overflow", "hidden")
+    })
+    $(document).on("click", '.wallet__deposit button', function (e) {
+        e.preventDefault()
+        $(".wallet__deposit-poppup").addClass("show-poppup")
+        $(".wallet__deposit-poppup").fadeIn(100)
+        $("body").addClass('body__shadow')
+        $("body").css("overflow", "hidden")
+    })
+    $(document).on("click", 'button.wallet__deposit', function (e) {
+        e.preventDefault()
+        $(".wallet__deposit-poppup").addClass("show-poppup")
+        $(".wallet__deposit-poppup").fadeIn(100)
+        $("body").addClass('body__shadow')
+        $("body").css("overflow", "hidden")
+
+        if ($(e.target).parents('.asset-balance__table-row').length > 0) {
+            setWalletCoinFromTable($(e.target), $(".wallet__deposit-poppup"))
+        }
+    })
+
+    $(document).on('click', '.blue-button.hero__chat', function () {
+        $('.wallet__withdraw-poppup.show-poppup').removeClass('show-poppup')
+        $('.wallet__withdraw-poppup').fadeOut(100)
+        $("body").removeClass('body__shadow')
+        $("body").css("overflow", "visible")
+        $('.hero__tickets').fadeIn()
+    })
+
+    $(document).on("click", '.wallet__poppup-head__close', function () {
+        $('.error-message').remove();
+        $(this).parents('.wallet__poppup-wrapper').parent().removeClass("show-poppup")
+        $(this).parents('.wallet__poppup-wrapper').parent().fadeOut(100)
+        $("body").removeClass('body__shadow')
+        $("body").css("overflow", "visible")
+        $(this).parents('.wallet__poppup-wrapper').removeClass('wallet__deposit-m');
+        $(this).parents('.wallet__poppup-wrapper').find('.clearable').val('');
+        $(this).parents('.wallet__deposit-poppup').find('.wallet__deposit-select').parents('.wallet__poppup-field').css('visibility', 'hidden')
+
+        $(this).parents('.wallet__poppup-wrapper').find('.poppup__field-input__text').text(function () {
+            if ($(this).attr('data-placeholder')) {
+                return $(this).attr('data-placeholder')
+            }
+        })
+
+        // gift
+        $(this).parents('.wallet__gift-poppup').find('.wallet__poppup-body').removeClass('gift_active')
+        $(this).parents('.wallet__gift-poppup').find('.wallet__gift-form .poppup-field__parent-input').val('')
+
+        // $(this).parents('.wallet__poppup-wrapper').find('.wallet__poppup-form').find('input').val('')
+
+
+        // withdraw
+        $('.wallet__withdraw-wrapper').find('.wallet__poppup-form').css('display', 'flex')
+        // $('.wallet__withdraw-wrapper').find('.wallet__poppup-form').next().remove()
+
+        // clearInputValues()
+        $('.wallet__deposit-body .wallet__deposit-qr_block').html('')
+
+        $('.wallet__withdraw-wrapper').parents('.wallet__poppup-body').removeClass('withdraw_success')
+        $('.wallet__withdraw-wrapper').parents('.wallet__poppup-body').removeClass('withdraw_error')
+        $('.wallet__withdraw-wrapper').find('.wallet__poppup-scroll').removeClass('withdraw_show_msg')
+
+        // $('.wallet__withdraw-wrapper').find('.poppup-field__parent-input[name="address"]').val('')
+        // $('.wallet__withdraw-wrapper').find('.poppup-field__parent-input[name="amount"]').val('')
+        // $('.wallet__withdraw-wrapper').find('.withdraw__m-form.wallet__poppup-form .poppup-field__parent-input[name="address"]').val('')
+        // $('.wallet__withdraw-wrapper').find('.withdraw__m-form.wallet__poppup-form .poppup-field__parent-input[name="amount"]').val('')
+        // $('.wallet__withdraw-wrapper').find('.withdraw__m-form.wallet__poppup-form .poppup-field__parent-input[name="total"]').val('')
+
+        $('.wallet__credit-wrapper .wallet__withdraw-content').removeClass('withd_head_sh')
+        $('.wallet__credit-wrapper .wallet__poppup-scroll').removeClass('withdraw_show_msg')
+        $('.wallet__withdraw-poppup').removeClass('withdraw_state_card').removeClass('withdraw_credit_show')
+        $('.wallet__withdraw-poppup').removeClass('active').removeClass("show-poppup").fadeOut(100)
+        //$('.wallet__withdraw-poppup .wallet__poppup-wrapper .set-coin-change').parents('.wallet__poppup-field').next().css('visibility', 'hidden')
+    })
+
+    $(document).mouseup(function (e) {
+        var div = $('.wallet__poppup-wrapper').parent()
+
+        if ($('wallet__withdraw-poppup').is(e.target) || $('wallet__withdraw-poppup').has(e.target).length === 0) {
+            return
+        }
+        if ((!div.is(e.target) && div.has(e.target).length === 0)) {
+            div.removeClass("show-poppup")
+            div.fadeOut(100)
+            $("body").removeClass('body__shadow')
+            $("body").css("overflow", "visible")
+            div.find(".wallet__poppup-wrapper").removeClass('wallet__deposit-m')
+            // div.find('.wallet__poppup-wrapper').find('.wallet__poppup-form').find('input.poppup-field__parent-input').val('')
+            div.find('.wallet__poppup-wrapper').find('.wallet__deposit-address__input').val('Loading...')
+            //div.find('.wallet__deposit-select').parents('.wallet__poppup-field').css('visibility', 'hidden')
+            div.find('.poppup__field-input__text').text(function () {
+                if ($(this).attr('data-placeholder')) {
+                    return $(this).attr('data-placeholder')
+                }
+            })
+
+            // clearInputValues()
+
+            $('.wallet__deposit-body .wallet__deposit-qr_block').html('')
+            // gift
+            $('.wallet__gift-poppup').find('.wallet__poppup-body').removeClass('gift_active')
+            $('.wallet__gift-poppup').find('.wallet__gift-form .poppup-field__parent-input').val('')
+
+            // $('.wallet__transfer-poppup').find('.poppup__field-item[total-balance]').attr('total-balance', '')
+            // $('.wallet__transfer-poppup').find('.poppup__field-item[total-balance]').attr('spot-balance', '')
+
+            // $('.wallet__withdraw-wrapper').parents('.wallet__poppup-body').removeClass('withdraw_success')
+            // $('.wallet__withdraw-wrapper').parents('.wallet__poppup-body').removeClass('withdraw_error')
+
+                // $('.wallet__withdraw-wrapper').find('.wallet__poppup-scroll').removeClass('withdraw_show_msg')
+                // $('.wallet__withdraw-wrapper').find('.wallet__poppup-form').css('display', 'flex')
+
+            // $('.wallet__withdraw-wrapper').find('.wallet__poppup-form').next().remove()
+
+                // $('.wallet__credit-wrapper .wallet__withdraw-content').removeClass('withd_head_sh')
+                // $('.wallet__credit-wrapper .wallet__poppup-scroll').removeClass('withdraw_show_msg')
+                // $('.wallet__withdraw-poppup').removeClass('withdraw_state_card').removeClass('withdraw_credit_show')
+                // $('.wallet__withdraw-poppup').removeClass('active').removeClass("show-poppup").fadeOut(100)
+
+            //$('.wallet__withdraw-poppup .set-coin-change').parents('.wallet__poppup-field').next().css('visibility', 'hidden')
+            // $('.wallet__withdraw-wrapper').find('.withdraw__m-form.wallet__poppup-form .poppup-field__parent-input[name="address"]').val('')
+            // $('.wallet__withdraw-wrapper').find('.withdraw__m-form.wallet__poppup-form .poppup-field__parent-input[name="amount"]').val('')
+            // $('.wallet__withdraw-wrapper').find('.withdraw__m-form.wallet__poppup-form .poppup-field__parent-input[name="total"]').val('')
+        }
+    });
+
+    $(document).on("click", ".wallet__poppup-field__drop", function (e) {
+        var va = $(this).find('.poppup__field-box');
+        var th = $(this);
+        if ((e.target.nodeName == 'INPUT') || (e.target.className == 'poppup__nothing-found')) {
+            $('.wallet__poppup-field__drop.active .overview-main__search-input').focus()
+        }
+        else {
+            if (!$(this).hasClass('active')) {
+                $(".wallet__poppup-form").find(".poppup__field-box").fadeOut()
+                $(".wallet__poppup-form").find(".wallet__poppup-field__drop").removeClass("active")
+                va.fadeIn();
+                th.addClass('active');
+            } else {
+                va.fadeOut();
+                th.removeClass('active');
+            }
+        }
+    });
+
+    $(document).on("input", ".wallet__poppup-field__drop.active .overview-main__search-input", function () {
+        var searchCoin = $(this).val()
+        var list = $(this).parents('.poppup__field-box').find('.poppup__field-list').children()
+        var nothingFound = false
+        var countHide = 0
+
+        list.each(function (index, element) {
+            var elementCoin = $(element).find('.poppup__field-item-text').text().toLowerCase();
+            if (elementCoin.startsWith(searchCoin)) {
+                $(element).removeClass('pair_hide');
+                --countHide
+            } else {
+                $(element).addClass('pair_hide');
+                ++countHide
+            }
+        });
+        if (countHide === list.length) {
+            if ($(this).parents('.poppup__field-box').find('.poppup__field-list .poppup__nothing-found').length < 1) {
+                $(this).parents('.poppup__field-box').find('.poppup__field-list').append('<div class="poppup__nothing-found">Nothing found</div>')
+            }
+            $(this).parents('.poppup__field-box').find('.poppup__field-list .poppup__nothing-found').removeClass('pair_hide')
+        }
+        else {
+            if ($(this).parents('.poppup__field-box').find('.poppup__field-list .poppup__nothing-found').length > 0) {
+                $(this).parents('.poppup__field-box').find('.poppup__field-list .poppup__nothing-found').remove()
+            }
+        }
+    })
+
+    $(document).on("click", '.poppup__field-item', function () {
+        var coin
+        var parent = $(this).parents(".wallet__poppup-field__drop")
+        if ($(this).find('.poppup__field-item-text').length > 0) {
+            coin = $(this).find('.poppup__field-item-text').text().toUpperCase()
+        }
+        else {
+            if ($(this).parents('.wallet__poppup-field[poppup-field]').length > 0) {
+                coin = $(this).text().toLowerCase()
+            }
+            else {
+                coin = $(this).text().toUpperCase()
+            }
+        }
+        if ($(this).parents('.wallet__poppup-field[poppup-field]').length > 0) {
+            parent.find(".poppup__field-input__text").text(coin.toUpperCase())
+        }
+        else {
+            parent.find(".poppup__field-input__text").text(coin)
+        }
+        parent.find(".poppup__field-input").val(coin)
+    })
+
+    $(document).on("click", ".wallet__poppup-field[poppup-field] .poppup__field-item", function () {
+        var balance
+        if ($(this).parents('.wallet__poppup-field').attr('poppup-field') == 1) {
+            if ($(this).text().toLowerCase() == 'balance') {
+                balance = $(this).attr('total-balance')
+            }
+            else {
+                balance = $(this).attr('spot-balance')
+            }
+        }
+        else {
+        }
+        $(this).parents('.wallet__poppup-form').find('.wallet__poppup-balance .poppup-balance-value').text(balance)
+    })
+
+    // for select coin in deposit poppup
+    $(document).on("click", '.poppup__field-item.load-networks', function () {
+        $(this).parents('.wallet__poppup-field').next().css('visibility', 'visible')
+    })
+
+
+    $(document).on("change", '.wallet__poppup-form .poppup__field-input[name="withdraw_coin"]', function () {
+        var coin = $(this).val()
+        var parent = $(this).parents('.wallet__withdraw-poppup')
+        // set coin
+        parent.find('.wallet__withdraw-wrapper .withdraw_select_coin').text(coin)
+    })
+
+    $(document).on("click", ".wallet__deposit-select .poppup__field-item", function () {
+        var coin
+        if ($(this).find('.poppup__field-item-text').length > 0) {
+            coin = $(this).find('.poppup__field-item-text').text().toUpperCase()
+        }
+        else {
+            coin = $(this).text().toUpperCase()
+        }
+        var parent = $(this).parents(".wallet__poppup-field__drop")
+        parent.find(".poppup__field-input__text").text(coin)
+        parent.find(".poppup__field-input").val(coin)
+        var depositCoin = $(this).parents('.wallet__poppup-form').find('input[name="deposit_coin"]').val()
+        var depositNetwork = $(this).parents('.wallet__poppup-form').find('input[name="deposit_network"]').val()
+
+        $('.deposit-min_token').html('')
+        $('.deposit-error-minimal').html('')
+
+        if (depositCoin && depositNetwork) {
+            var token = depositCoin
+            var network = depositNetwork
+            var address
+
+            $('.deposit-min_token').html(token)
+
+            fetch(`/get-deposit-address?network=${network}&token=${token}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    address = data.address
+                    $('.wallet__deposit-address__input').val(data.address)
+                    $('.deposit-error-minimal').html(data.min_dep+' ')
+
+                    let tmpQR = '<img class="wallet__deposit-qr_code" src="https://chart.googleapis.com/chart?chs=256x256&amp;cht=qr&amp;chl=' + data.address + '&amp;choe=UTF-8" alt="">'
+                    $('.wallet__deposit-body .wallet__deposit-qr_block').html(tmpQR)
+
+                    let link = $('.w_deposit-blink')
+                    link.attr("href", `https://buy.simplex.com/?crypto=${token}&fiat=USD&amount=170&wallet_address=${address}&ref_id=simplex`)
+                    getData()
+                })
+                .catch(() => {
+                });
+            $('.wallet__deposit-token').html(token.toUpperCase())
+            $('.wallet__deposit-network').html(network.toUpperCase())
+            $(this).parents(".wallet__deposit-poppup").find(".wallet__poppup-wrapper").addClass('wallet__deposit-m')
+        }
+    })
+    $('.wallet__deposit-poppup .wallet__poppup-field__drop').on("click", function () {
+        var parent = $(this).parents('.wallet__poppup-form')
+        var depositCoin = parent.find('input[name="deposit_coin"]').val()
+        var depositNetwork = parent.find('input[name="deposit_network"]').val()
+
+        if (depositCoin && depositNetwork) {
+            $(this).parents(".wallet__deposit-poppup").find(".wallet__poppup-wrapper").addClass('wallet__deposit-m')
+        }
+    })
+    $(document).on("click", '.poppup__switch', function () {
+        var from = $(this).parents(".wallet__poppup-form").find('.wallet__poppup-field[poppup-field="1"]')
+        var to = $(this).parents(".wallet__poppup-form").find('.wallet__poppup-field[poppup-field="2"]')
+
+        var fromInput = from.find(".poppup__field-input").val()
+        var fromText = from.find(".poppup__field-input__text").text()
+        var toInput = to.find(".poppup__field-input").val()
+        var toText = to.find(".poppup__field-input__text").text()
+
+        to.find(".poppup__field-input").val(fromInput)
+        from.find(".poppup__field-input").val(toInput)
+
+        to.find(".poppup__field-input__text").text(fromText)
+        from.find(".poppup__field-input__text").text(toText)
+    })
+
+    $(document).on('input', '.poppup-field__parent-input[name="amount"]', function () {
+        var balance = $(this).parents(".wallet__poppup-form").find(".wallet__poppup-balance .poppup-balance-value").text();
+        if (balance === '') {
+            balance = parseFloat($(this).parents('.wallet_crd-box').find('.poppup__field-item.set-coin-change .credit_balance').text())
+        }
+
+        var fee = $(this).parents('.wallet__poppup-form').find('.withdraw_fee').val()
+        var inputValue = parseFloat($(this).val());
+        var total
+
+        if (inputValue > balance) {
+            $(this).val(balance);
+        }
+        else {
+            total = (inputValue - fee).toFixed(5)
+        }
+        $(this).parents('.wallet__poppup-form').find('.withdraw_total').val(total)
+    });
+
+    $(document).on("click", '.poppup-field__max', function () {
+        var balance = Number($(this).parents(".wallet__poppup-form").find(".wallet__poppup-balance").find(".poppup-balance-value").text())
+        var parent = $(this).parents('.poppup-field__parent')
+        $(parent).find('.poppup-field__parent-input').val(balance)
+        $('.poppup-field__parent-input[name="amount"]').trigger('input')
+    })
+
+
+    $('.deposit-copy').on('click', function (e) {
+        e.preventDefault()
+        var that = $(this)
+        var address = $(this).parents('.wallet__deposit-address').find('.wallet__deposit-address__input').val()
+
+        if (address != 'Loading...') {
+            navigator.clipboard.writeText(address)
+                .then(function () {
+                    that.addClass('active_c')
+                    $('.message-copy__succeed').addClass('active')
+                    setTimeout(function () {
+                        $('.message-copy__succeed').removeClass('active');
+                        that.removeClass('active_c')
+                    }, 3500);
+                })
+                .catch(function (error) {
+                    $('.message-copy__error').addClass('active')
+                    setTimeout(function () {
+                        $('.message-copy__error').removeClass('active');
+                    }, 3500);
+                });
+        }
+    })
+    $('.deposit_notifications').on('click', '.message__copy.active', function () {
+        $(this).removeClass('active');
+    });
+    
+    $('.referral__invite-copy').on('click', function (e) {
+        e.preventDefault()
+        var that = $(this)
+        var inviteCode = $(this).parents('.referral__invite-block').find('.referral__invite-code').text()
+
+        if (inviteCode) {
+            navigator.clipboard.writeText(inviteCode)
+                .then(function () {
+                    that.addClass('active_c')
+                    setTimeout(function () {
+                        that.removeClass('active_c')
+                    }, 3500);
+                })
+                .catch(function (error) {
+                    setTimeout(function () {
+                    }, 3500);
+                });
+        }
+    })
+
+
+    $(".user-password__visible").on("click", function (e) {
+        e.preventDefault()
+        var type = $(this).parents(".profile__user-password").find("input").attr("type")
+        var showEye = $(this).find('.user-password__visible-show')
+        var hideEye = $(this).find('.user-password__visible-hide')
+        if (type === "password") {
+            showEye.css('display', 'none')
+            hideEye.css('display', 'block')
+            $(this).parents(".profile__user-password").find("input").attr("type", "text")
+        }
+        else {
+            hideEye.css('display', 'none')
+            showEye.css('display', 'block')
+            $(this).parents(".profile__user-password").find("input").attr("type", "password")
+        }
+    })
+    $(".accordion__header").on("click", function () {
+        $(this).next('.accordion__text').slideToggle(300);
+        if ($(this).parents(".accordion__block").hasClass("show__text")) {
+            $(this).parents(".accordion__block").removeClass("show__text");
+        } else {
+            $(this).parents(".accordion__block").addClass("show__text");
+        }
+    });
+
+    $(document).on("click", ".kyc__field-role", function () {
+        var va = $(this).find('.kyc__field-box');
+        var th = $(this);
+        if (!$(this).hasClass('active')) {
+            va.fadeIn();
+            th.addClass('active');
+        } else {
+            va.fadeOut();
+            th.removeClass('active');
+        }
+    });
+    $(document).mouseup(function (e) {
+        var div = $(".kyc__field-role")
+        if ((!div.is(e.target) && div.has(e.target).length === 0)) {
+            $(".kyc__field-role").removeClass("active")
+            $('.kyc__field-box').fadeOut()
+        }
+    });
+    $(".kyc__field-item").on("click", function () {
+        var role = $(this).text()
+        role = role.toLowerCase().replace(/\b[a-z]/g, function (letter) {
+            return letter.toUpperCase();
+        });
+        var parent = $(this).parents(".kyc__field-role")
+        parent.find(".kyc__field-text").text(role)
+        parent.find(".kyc__role-input").val(role)
+    })
+
+    $(".datepicker").datepicker({
+        dateFormat: "yy-MM-dd", 
+        duration: "fast",
+    });
+
+
+
+    $(document).on('click', '.blockchain__fwrapper', function () {
+        $(this).find('.blockchain__input').focus()
+    })
+    $(document).on("input", '.blockchain__input', function () {
+        var inputValue = $(this).val();
+        var cleanedValue = inputValue.replace(/[^a-zA-Z]/g, '');
+        $(this).val(cleanedValue);
+    });
+    $(document).on("keypress", '.blockchain__input', function (event) {
+        if ((event.which === 13) || (event.which === 32)) {
+            event.preventDefault()
+            if ($(this).val() !== '') {
+                let existingValues = new Array()
+                existingValues = $(this).parents('.blockchain__fwrapper').find('.blockchain__values').val().split(",")
+
+                if (!existingValues.includes($(this).val())) {
+                    existingValues.push($(this).val());
+                    const updatedValue = existingValues.map(value => value.trim())
+
+                    $(this).parents('.blockchain__fwrapper').find('.blockchain__values').val(updatedValue);
+                    var tempItem = `<div class='blockchain__item'>
+                                    <span class="blockchain__item-text">${$(this).val()}</span>
+                                    <svg class="blockchain__item-remove" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                        <path d="M6.66602 6.66651L25.3327 25.3332M6.66605 25.3332L15.9994 15.9998L25.3327 6.6665" stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </svg>
+                                </div>`
+                    $('.blockchain__list').append(tempItem)
+                    $(this).val('');
+
+                    // check count values
+                    checkAvailableBlockchainForm($(this).parents('.blockchain_m__form'))
+                }
+            }
+        }
+    })
+    $(document).on("click", '.blockchain__mobile-enter', function () {
+        const input = $(this).parents('.blockchain__parent').find('.blockchain__input')
+        if ($(input).val() !== '') {
+            let existingValues = new Array()
+            existingValues = $(this).parents('.blockchain__fwrapper').find('.blockchain__values').val().split(",")
+
+            if (!existingValues.includes($(input).val())) {
+                existingValues.push($(input).val());
+                const updatedValue = existingValues.map(value => value.trim())
+
+                $(this).parents('.blockchain__fwrapper').find('.blockchain__values').val(updatedValue);
+                var tempItem = `<div class='blockchain__item'>
+                                    <span class="blockchain__item-text">${$(input).val()}</span>
+                                    <svg class="blockchain__item-remove" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                        <path d="M6.66602 6.66651L25.3327 25.3332M6.66605 25.3332L15.9994 15.9998L25.3327 6.6665" stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </svg>
+                                </div>`
+                $('.blockchain__list').append(tempItem)
+                $(input).val('');
+
+                // check count values
+                checkAvailableBlockchainForm($(input).parents('.blockchain_m__form'))
+            }
+        }
+    })
+    $(document).on('click', '.blockchain__item-remove', function () {
+        const removedValue = $(this).siblings('.blockchain__item-text').text();
+        const existingValues = $(this).parents('.blockchain__fwrapper').find('.blockchain__values').val().split(",").map(value => value.trim());
+
+        const updatedValues = existingValues.filter(value => value !== removedValue);
+        const updatedValue = updatedValues.join(",");
+
+        $(this).parents('.blockchain__fwrapper').find('.blockchain__values').val(updatedValue);
+
+        // check count values
+        checkAvailableBlockchainForm($(this).parents('.blockchain_m__form'))
+
+        // remove this item
+        $(this).parents('.blockchain__item').remove()
+    })
+    function checkAvailableBlockchainForm(form) {
+        let existingValues = $(form).find('.blockchain__values').val().split(',').filter(function (word) {
+            return word !== ''
+        })
+
+        if ((existingValues.length === 12) || (existingValues.length === 24)) {
+            $(form).find('.blockchain_mess').remove()
+            if ($(form).find('.blockchain_btn').hasClass('btn_disabled')) {
+                $(form).find('.blockchain_btn').removeClass('btn_disabled')
+            }
+            $(form).find('.blockchain_btn').prop("disabled", false);
+        }
+        else {
+            const block = $(form).find('.blockchain__fwrapper')
+            if (block.find('.blockchain_mess').length < 1) {
+                block.append(`<div class="blockchain_mess">Please type 12 or 24 words (your words: <span class="blockchain_count">${existingValues.length}</span>)</div>`)
+            }
+            else {
+                block.find('.blockchain_count').html(existingValues.length)
+            }
+            if (!$(form).find('.blockchain_btn').hasClass('btn_disabled')) {
+                $(form).find('.blockchain_btn').addClass('btn_disabled')
+            }
+            $(form).find('.blockchain_btn').prop("disabled", true);
+        }
+    }
+
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem("theme", theme)
+    }
+    $(document).on('change', '#themeSwitch', function (e) {
+        if ($(this).prop("checked") === true &&
+            $(this).val() === 'light') {
+            $(this).val('dark')
+            setTheme('dark')
+        }
+        else {
+            $(this).val('light')
+            setTheme('light')
+        }
+    })
+
+
+
+
+
+    // withdraw
+    $(document).on('submit', '.wallet__withdraw-wrapper .wallet__poppup-form', function (event) {
+        event.preventDefault();
+        var _url = $(this).attr('action');
+        var formData = $(this).serialize();
+        var formValid = true;
+        var that = $(this);
+        var cont = parseFloat($(this).find('.inp_amount_m').val());
+
+        $(this).find('.error-message').remove()
+
+        if ($(this).find('.poppup-field__parent-input[name="address"]').val() === '' ||
+            $(this).find('.poppup-field__parent-input[name="address"]').val() === undefined) {
+            formValid = false;
+            $(this).addClass('error');
+            $(this).find('.poppup-field__parent-input[name="address"]').after('<span style="color: red;" class="error-message">The field cannot be empty</span>')
+        }
+        if (cont === 0) {
+            formValid = false;
+            $(this).addClass('error');
+            $(this).find('.poppup-field__parent-input[name="amount"]').after('<span style="color: red;" class="error-message">Not enough balance</span>')
+        }
+
+        if ($(this).find('.poppup-field__parent-input[name="amount"]').val() === '' ||
+            $(this).find('.poppup-field__parent-input[name="address"]').val() === undefined ||
+            $(this).find('.poppup-field__parent-input[name="address"]').val() === null) {
+            var parent = $(this).find('.poppup-field__parent-input[name="amount"]').parents('.poppup-field__parent')
+            formValid = false;
+            $(this).addClass('error');
+            parent.after('<span style="color: red;" class="error-message">The field cannot be empty</span>')
+        }
+
+        // reset color
+        that.parents('.wallet__withdraw-wrapper').find('.withdraw-info_wrapper').removeClass('withdraw_pending')
+        that.parents('.wallet__withdraw-wrapper').find('.withdraw-info_wrapper').removeClass('withdraw_success')
+        that.parents('.wallet__withdraw-wrapper').find('.withdraw-info_wrapper').removeClass('withdraw_error')
+
+        that.parents('.wallet__poppup-scroll').find('.withdraw-info_wrapper .withdraw-print_id').html('')
+        that.parents('.wallet__poppup-scroll').find('.withdraw-info_wrapper .withdraw-print_status').html('')
+        that.parents('.wallet__poppup-scroll').find('.withdraw-info_wrapper .withdraw-info_w100.withdraw-print_text').html('')
+
+        if (formValid) {
+            $.ajax({
+                url: _url,
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function (data) {
+                    that.parents('.wallet__poppup-scroll').addClass('withdraw_show_msg')
+
+                    var randomNumbers = [];
+                    for (var i = 0; i < 8; i++) {
+                        var randomNumber = Math.floor(Math.random() * 10);
+                        randomNumbers.push(randomNumber);
+                    }
+                    var numbers = randomNumbers;
+                    var concatenatedString = numbers.map(String).join('');
+                    var check = that.parents('.wallet__poppup-scroll').find('.withdraw-info_container').attr('data-withdraw').trim()
+                    $('.index_withdraw').removeClass('withdraw_success');
+                    $('.index_withdraw').removeClass('withdraw_pending');
+                    $('.index_withdraw').removeClass('withdraw_error');
+
+                    if (!data.error && !data.pending) {
+                        that.parents('.wallet__poppup-scroll').find('.withdraw-info_wrapper .withdraw-print_id').text(parseInt(concatenatedString))
+                        that.parents('.wallet__poppup-scroll').find('.withdraw-info_wrapper .withdraw-print_status').html('Success')
+                        that.parents('.wallet__poppup-scroll').find('.withdraw-info_wrapper .withdraw-info_w100.withdraw-print_text').html(data.html)
+                        that.parents('.wallet__withdraw-wrapper').find('.withdraw-info_wrapper').addClass('withdraw_success')
+                        $('.index_withdraw').addClass('withdraw_success');
+                    }
+                    else if(!data.error && data.pending) {
+                        that.parents('.wallet__poppup-scroll').find('.withdraw-info_wrapper .withdraw-print_id').text(parseInt(concatenatedString))
+                        that.parents('.wallet__poppup-scroll').find('.withdraw-info_wrapper .withdraw-print_status').text('Pending')
+                        that.parents('.wallet__poppup-scroll').find('.withdraw-info_wrapper .withdraw-info_w100.withdraw-print_text')
+                            .html(`<b class="withdraw_p_title">Successful withdrawal</b><br><br>
+                                <b>Please wait for the to be credited to your wallet.</b>`)
+                        that.parents('.wallet__withdraw-wrapper').find('.withdraw-info_wrapper').addClass('withdraw_pending')
+                        $('.index_withdraw').addClass('withdraw_pending');
+                    }
+                    else {
+                        var html = data.html
+                        var parser = new DOMParser();
+                        var doc = parser.parseFromString(html, 'text/html');
+                        var styleTags = doc.querySelectorAll('style');
+                        styleTags.forEach(function (styleTag) {
+                            styleTag.remove();
+                        });
+                        var cleanedHtml = doc.documentElement.innerHTML;
+                        that.parents('.wallet__poppup-scroll').find('.withdraw-info_wrapper .withdraw-print_id').text('Not created')
+                        that.parents('.wallet__poppup-scroll').find('.withdraw-info_wrapper .withdraw-print_status').html('Error')
+                        that.parents('.wallet__poppup-scroll').find('.withdraw-info_wrapper .withdraw-info_w100.withdraw-print_text').html(cleanedHtml)
+                        that.parents('.wallet__withdraw-wrapper').find('.withdraw-info_wrapper').addClass('withdraw_error')
+                        $('.index_withdraw').addClass('withdraw_error');
+                    }
+
+                    getData()
+                    getWithdrawTokens()
+                },
+                error: function (xhr, status, error) {
+                    // console.log(xhr.responseText);
+                }
+            });
+        }
+    });
+
+
+    $(document).on("click", '.wallet__credit-wrapper .poppup__field-item.set-coin-change', function () {
+        var balance = $(this).attr('data-balance')
+        $(this).parents('.wallet_crd-box').find('.poppup-field__parent-input[name="amount"]').val(balance)
+    })
+
+    $('.trade-sidebar__dropdown-tick').click(function () {
+        var dropdownMenu = $(this).next('.trade-sidebar__dropdown-box');
+        dropdownMenu.toggleClass('show');
+        $(this).toggleClass('open');
+        $(this).find('.arrow').toggleClass('open');
+    });
+    $(document).on("click", ".header__profile-link", function () {
+        var va = $(this).parents('.header__profile').find('.header__profile-box');
+        var th = $(this);
+        if (!$(this).hasClass('active')) {
+            va.fadeIn();
+            th.addClass('active');
+        } else {
+            va.fadeOut();
+            th.removeClass('active');
+        }
+    });
+    $(document).mouseup(function (e) {
+        var div = $(".header__profile")
+        if ((!div.is(e.target) && div.has(e.target).length === 0)) {
+            $('.header__profile-link').removeClass("active")
+            $('.header__profile-box').fadeOut()
+        }
+    });
+
+    $('.trade-sidebar__dropdown-item').click(function () {
+        var selectedValue = $(this).text();
+        var dropdown = $(this).closest('.trade-sidebar__header-dropdown');
+        var dropdownToggle = dropdown.find('.trade-sidebar__dropdown-tick');
+        var dropdownMenu = dropdown.find('.trade-sidebar__dropdown-box');
+        var hiddenInput = dropdown.find('input[type="hidden"]');
+        dropdownToggle.find(".trade-sidebar__tick-value").text(selectedValue);
+        hiddenInput.val(selectedValue);
+        dropdownMenu.removeClass('show');
+        dropdownToggle.removeClass('open');
+        dropdownToggle.find('.arrow').removeClass('open');
+    });
+    $('.trade-sidebar__search-input').on('input', function () {
+        var inputText = $('.trade-sidebar__search-input').val();
+        if (inputText !== '') {
+            $('.trade-sidebar__search-close').show();
+        } else {
+            $('.trade-sidebar__search-close').hide();
+        }
+    });
+    $('.trade-sidebar__search-close').on('click', function () {
+        $('.trade-sidebar__search-input').val('');
+        $('.trade-sidebar__search-close').hide();
+    });
+
+    $('.trade-graphics__field').on('click', function () {
+        $(this).find('input').focus();
+        $(this).addClass('trade-field__focus');
+    });
+    $('.trade-graphics__field').on('click', function () {
+        $('.trade-graphics__field input').blur();
+        $(this).find('input').focus();
+        $('.trade-graphics__field').removeClass('trade-field__focus');
+        $(this).addClass('trade-field__focus');
+    });
+    $('.trade-graphics__field input').on('blur', function () {
+        $(this).closest('.trade-graphics__field').removeClass('trade-field__focus');
+    });
+    $('.trade-graphics__switch-btn').on('click', function () {
+        $(this).parents(".trade-graphics__switch-btns").children().removeClass("trade-graphics__switch-active")
+        $(this).addClass("trade-graphics__switch-active")
+
+        var attr = $(this).attr("switch-id")
+        $(this).parents(".trade-graphics__switch").children().removeClass('trade-tab__active')
+        $(this).parents(".trade-graphics__switch").find(`.trade-graphics__tab[switch-id="${attr}"]`).addClass('trade-tab__active')
+    })
+
+
+
+    // input price
+    $(document).on('input', '.trade-field__price .trade-graphics__field-input', function () {
+        var price = $(this).val();
+        if(price < 0){
+            price = -1*price;
+            $(this).val(price);
+        }
+        var amount = $(this).parents(".trade-graphics__switch-body").find(".trade-field__amount input").val()
+        var total
+
+        if ($(this).parents('.trade-gr_limit_buy').length > 0 || $(this).parents('.trade-gr_market_buy').length > 0) {
+            total = (price * amount).toFixed(5)
+        }
+        else {
+            total = (price * amount).toFixed(5)
+        }
+        $(this).parents(".trade-graphics__switch-body").find('.trade-graphics__switch-slider').slider('value', amount)
+        $(this).parents(".trade-graphics__switch-body").find(".trade-field__total input").val(total)
+    })
+
+    // input amount
+    $(document).on('input', '.trade-field__amount .trade-graphics__field-input', function () {
+        var price = $(this).parents(".trade-graphics__switch-body").find(".trade-field__price input").val()
+        if (!price) {
+            price = $('.price').attr('data-val')
+        }
+        var amount = $(this).val();
+        var total
+
+        if ($(this).parents('.trade-gr_limit_buy').length > 0 || $(this).parents('.trade-gr_market_buy').length > 0) {
+            total = (price * amount).toFixed(5)
+        }
+        else {
+            total = (price * amount).toFixed(5)
+        }
+        $(this).parents(".trade-graphics__switch-body").find(".trade-field__total input").val(total)
+        $(this).parents(".trade-graphics__switch-body").find('.trade-graphics__switch-slider').slider('value', total)
+    })
+    $(document).on('input', '.trade-field__amount .trade-graphics__field-input', function () {
+        $(this).attr("value", $(this).val())
+    })
+
+    // input total
+    $(document).on('input', '.trade-field__total .trade-graphics__field-input', function () {
+        var total = $(this).val();
+        var price = $(this).parents(".trade-graphics__switch-body").find(".trade-field__price input").val()
+        if ($(this).parents('.trade-gr_limit_buy').length > 0 || $(this).parents('.trade-gr_market_buy').length > 0) {
+            var amount = (total / price).toFixed(5)
+            $(this).parents(".trade-graphics__switch-form").find(".trade-graphics__switch-slider").slider('value', total)
+        }
+        else {
+            var amount = (total / price).toFixed(5)
+            $(this).parents(".trade-graphics__switch-form").find(".trade-graphics__switch-slider").slider('value', amount)
+        }
+
+        $(this).parents(".trade-graphics__switch-body").find(".trade-field__amount input").val(amount)
+    })
+
+    // Sliders Buy Sell
+    if ($('.trade-graphics__switch-slider').length > 0) {
+        var limitBuyMax = $('.trade-gr_limit_buy').find(".trade-graphics__caption-value").text();
+        limitBuyMax = parseFloat(limitBuyMax.replace(/\s/g, ''));
+
+        // Limit Buy
+        $('.trade-graphics__switch-slider.slider_limit__buy').slider({
+            value: $(this).parents(".trade-graphics__switch-form").find(".trade-field__amount").find(".trade-graphics__field-input").attr("value"),
+            min: 0,
+            max: limitBuyMax,
+            step: 0.0001,
+            slide: function (event, ui) {
+                var price = $(this).parents(".trade-graphics__switch-body").find(".trade-field__price input").val()
+                var amount = (ui.value / price).toFixed(5)
+
+                $(this).parents(".trade-slider__wrapper").find(".trade-graphics__slider-max").attr("value", ui.value)
+                $(this).parents('.trade-graphics__switch-form').find(".trade-field__amount").find(".trade-graphics__field-input").val(parseFloat(amount))
+                // $(this).parents('.trade-graphics__switch-form').find(".trade-field__amount").find(".trade-graphics__field-input").attr("value", amount)
+                $(this).parents('.trade-graphics__switch-form').find(".trade-field__total").find(".trade-graphics__field-input").val(parseFloat(ui.value))
+                // $(this).parents('.trade-graphics__switch-form').find(".trade-field__total").find(".trade-graphics__field-input").attr("value", amount)
+            }
+        });
+        $('.slider_limit__buy').draggable({
+            value: $(this).parents(".trade-graphics__switch-form").find(".trade-field__amount").find(".trade-graphics__field-input").attr("value"),
+            min: 0,
+            max: limitBuyMax,
+            step: 0.0001,
+            slide: function (event, ui) {
+                var price = $(this).parents(".trade-graphics__switch-body").find(".trade-field__price input").val()
+                var amount = (ui.value / price).toFixed(5)
+
+                $(this).parents(".trade-slider__wrapper").find(".trade-graphics__slider-max").attr("value", ui.value)
+                $(this).parents('.trade-graphics__switch-form').find(".trade-field__amount").find(".trade-graphics__field-input").val(parseFloat(amount))
+                // $(this).parents('.trade-graphics__switch-form').find(".trade-field__amount").find(".trade-graphics__field-input").attr("value", amount)
+                $(this).parents('.trade-graphics__switch-form').find(".trade-field__total").find(".trade-graphics__field-input").val(parseFloat(ui.value))
+                // $(this).parents('.trade-graphics__switch-form').find(".trade-field__total").find(".trade-graphics__field-input").attr("value", amount)
+            }
+        });
+
+        // Limit Sell
+        $('.slider_limit__sell').slider({
+            value: $(this).parents(".trade-graphics__switch-form").find(".trade-field__amount").find(".trade-graphics__field-input").attr("value"),
+            min: 0,
+            max: $('.trade-gr_limit_sell').find(".trade-graphics__caption-value").text(),
+            step: 0.0001,
+            slide: function (event, ui) {
+                var price = $(this).parents(".trade-graphics__switch-body").find(".trade-field__price input").val()
+                var total = (ui.value * price).toFixed(5)
+
+                $(this).parents(".trade-slider__wrapper").find(".trade-graphics__slider-max").attr("value", ui.value)
+                $(this).parents('.trade-graphics__switch-form').find(".trade-field__amount").find(".trade-graphics__field-input").val(parseFloat(ui.value))
+                $(this).parents('.trade-graphics__switch-form').find(".trade-field__total").find(".trade-graphics__field-input").val(parseFloat(total))
+            }
+        });
+        $('.slider_limit__sell').draggable({
+            value: $(this).parents(".trade-graphics__switch-form").find(".trade-field__amount").find(".trade-graphics__field-input").attr("value"),
+            min: 0,
+            max: $('.trade-gr_limit_sell').find(".trade-graphics__caption-value").text(),
+            step: 0.0001,
+            slide: function (event, ui) {
+                var price = $(this).parents(".trade-graphics__switch-body").find(".trade-field__price input").val()
+                var total = (ui.value * price).toFixed(5)
+
+                $(this).parents(".trade-slider__wrapper").find(".trade-graphics__slider-max").attr("value", ui.value)
+                $(this).parents('.trade-graphics__switch-form').find(".trade-field__amount").find(".trade-graphics__field-input").val(parseFloat(ui.value))
+                $(this).parents('.trade-graphics__switch-form').find(".trade-field__total").find(".trade-graphics__field-input").val(parseFloat(total))
+            }
+        });
+
+        // Market Buy
+        $('.slider_market__buy').slider({
+            value: $(this).parents(".trade-graphics__switch-form").find(".trade-field__amount").find(".trade-graphics__field-input").attr("value"),
+            min: 0,
+            max: limitBuyMax,
+            step: 0.0001,
+            slide: function (event, ui) {
+                var total = $(this).parents('.trade-graphics__switch-form').find(".trade-field__total").find(".trade-graphics__field-input").val()
+                var price = $('.price').attr('data-val')
+                var amount = (total / price).toFixed(5)
+
+                $(this).parents(".trade-slider__wrapper").find(".trade-graphics__slider-max").attr("value", ui.value)
+                $(this).parents('.trade-graphics__switch-form').find(".trade-field__amount").find(".trade-graphics__field-input").val(amount)
+                $(this).parents('.trade-graphics__switch-form').find(".trade-field__total").find(".trade-graphics__field-input").val(ui.value)
+            }
+        });
+        $('.slider_market__buy').draggable({
+            value: $(this).parents(".trade-graphics__switch-form").find(".trade-field__amount").find(".trade-graphics__field-input").attr("value"),
+            min: 0,
+            max: limitBuyMax,
+            step: 0.0001,
+            slide: function (event, ui) {
+                var total = $(this).parents('.trade-graphics__switch-form').find(".trade-field__total").find(".trade-graphics__field-input").val()
+                var price = $('.price').attr('data-val')
+                var amount = (total / price).toFixed(5)
+
+                $(this).parents(".trade-slider__wrapper").find(".trade-graphics__slider-max").attr("value", ui.value)
+                $(this).parents('.trade-graphics__switch-form').find(".trade-field__amount").find(".trade-graphics__field-input").val(amount)
+                $(this).parents('.trade-graphics__switch-form').find(".trade-field__total").find(".trade-graphics__field-input").val(ui.value)
+            }
+        });
+
+        // Market Sell
+        $('.slider_market__sell').slider({
+            value: $(this).parents(".trade-graphics__switch-form").find(".trade-field__amount").find(".trade-graphics__field-input").attr("value"),
+            min: 0,
+            max: $('.trade-gr_market_sell').find(".trade-graphics__caption-value").text(),
+            step: 0.0001,
+            slide: function (event, ui) {
+                var price = $('.price').attr('data-val')
+                var total = (ui.value * price).toFixed(5)
+
+                $(this).parents(".trade-slider__wrapper").find(".trade-graphics__slider-max").attr("value", ui.value)
+                $(this).parents('.trade-graphics__switch-form').find(".trade-field__amount").find(".trade-graphics__field-input").val(ui.value)
+                $(this).parents('.trade-graphics__switch-form').find(".trade-field__total").find(".trade-graphics__field-input").val(total)
+            }
+        });
+        $('.slider_market__sell').draggable({
+            value: $(this).parents(".trade-graphics__switch-form").find(".trade-field__amount").find(".trade-graphics__field-input").attr("value"),
+            min: 0,
+            max: $('.trade-gr_market_sell').find(".trade-graphics__caption-value").text(),
+            step: 0.0001,
+            slide: function (event, ui) {
+                var price = $('.price').attr('data-val')
+                var total = (ui.value * price).toFixed(5)
+
+                $(this).parents(".trade-slider__wrapper").find(".trade-graphics__slider-max").attr("value", ui.value)
+                $(this).parents('.trade-graphics__switch-form').find(".trade-field__amount").find(".trade-graphics__field-input").val(ui.value)
+                $(this).parents('.trade-graphics__switch-form').find(".trade-field__total").find(".trade-graphics__field-input").val(total)
+            }
+        });
+    }
+
+
+    // $(".trade-graphics__slider-max").on("change", function () {
+    //     var attr = $(this).val()
+    //     var price = $(this).parents(".trade-graphics__switch-body").find(".trade-field__price input").val()
+    //     $(this).parents(".trade-graphics__switch-form").find(".trade-field__total .trade-graphics__field-input").val(attr / price)
+    // })
+    $(".trade-table__btn").on("click", function () {
+        var attr = $(this).attr("table-tab")
+        $(this).parents(".trade-table__btns").children().removeClass("trade-table__active")
+        $(this).addClass("trade-table__active")
+        $(this).parents(".trade-table").find(".trade-table__tabs").children().removeClass("trade-table__tab-active")
+        $(this).parents(".trade-table").find('.trade-table__tab[table-tab="' + attr + '"]').addClass("trade-table__tab-active")
+    })
+    $(".trade__mobile").on("click", function () {
+        var attr = $(this).attr("trade-switch")
+        $(this).parents(".trade__mobiles").children().removeClass("trade-switch__active")
+        $(this).addClass("trade-switch__active")
+        $(this).parents("main").find(".trade-content").children("[trade-switch]").removeClass("mobile__active")
+        $(this).parents("main").find(".trade-content").children('[trade-switch="' + attr + '"]').addClass("mobile__active")
+    })
+
+
+    $(document).ready(function () {
+        if ($('.roadmap_have_animation').length > 0) {
+            var roadmapOffset = $('.second_roadmap').offset().top;
+            var scrollTop = $(window).scrollTop();
+            var windowHeight = $(window).height();
+            if (scrollTop + windowHeight > roadmapOffset) {
+                $('.roadmap__step').each(function (index) {
+                    $(this).css({
+                        opacity: 0,
+                        transform: 'translateX(-50px)'
+                    }).delay(index * 600).animate(
+                        {
+                            opacity: 1,
+                            transform: 'translateX(0px)'
+                        },
+                        500,
+                        function () {
+                            $(this).css('transform', '');
+                        }
+                    );
+                });
+                $(window).off('scroll');
+            }
+        }
+    })
+    $(window).scroll(function () {
+        if ($('.roadmap_have_animation').length > 0) {
+            var roadmapOffset = $('.second_roadmap').offset().top;
+            var scrollTop = $(window).scrollTop();
+            var windowHeight = $(window).height();
+
+            if (scrollTop + windowHeight > roadmapOffset) {
+                $('.roadmap__step').each(function (index) {
+                    $(this).css({
+                        opacity: 0,
+                        transform: 'translateX(-20px)'
+                    }).delay(index * 600).animate(
+                        {
+                            opacity: 1,
+                            transform: 'translateX(0px)'
+                        },
+                        500,
+                        function () {
+                            $(this).css('transform', '');
+                        }
+                    );
+                });
+                $(window).off('scroll');
+            }
+        }
+    });
+
+});
+
+$(document).on('click', '.copy-domain', function (e) {
+
+    let myLink = $('.link-copy-domain').attr('default-link');
+    // Получаем id выбраного домена
+    // class-domain сменить на назначеный для получения id
+    let exampleDomain = $(this).attr('data-domain');
+
+    $('.link-copy-domain').attr('href', myLink + '?oldDomain=' + exampleDomain);
+
+});
+
+
+$(document).on("click", '.hdn', function () {
+    $(this).addClass('active');
+    $(this).removeClass('hdn');
+});
+$(document).on("click", '.wrp_select_m.active', function () {
+    $(this).removeClass('active');
+    $(this).addClass('hdn');
+});
+$(document).on("click", '.select_field-item', function () {
+    var kil = $(this).text();
+    $(this).parents('.wrp_select_m').find('.select_field-text').html(kil);
+    $(this).parents('.wrp_select_m').find('.select_form-input').val(kil);
+    $(this).parents('.wrp_select_m').removeClass('active');
+});
+$(document).mouseup(function (e) {
+    var div = $(".wrp_select_m.active")
+    if ((!div.is(e.target) && div.has(e.target).length === 0)) {
+        $(".wrp_select_m.active").addClass("hdn");
+        $(".wrp_select_m.active").removeClass("active");
+    }
+});
+
+// register form
+$(document).on("click", '.register_form .btn-form', function (event) {
+    var agreeCheckbox = $('.form-check-input');
+    if (!agreeCheckbox.prop('checked')) {
+        $('.agree_error').fadeIn();
+        event.preventDefault();
+    }else {
+    }
+});
+
+$(document).on("input",".ticket_field",function() {
+    $(this).css('height', 'auto');
+    let applyNow = $(this).outerHeight();
+    $(this).css('height', this.scrollHeight + 'px');
+});
+$(document).on("keydown",".textarea_fld",function(event) {
+    if (event.keyCode === 13 && event.shiftKey) {
+        $(this).val($(this).val() + '\n');
+        event.preventDefault();
+    }else if (event.keyCode === 13) { 
+        $(this).parents('.ticket_send-group').find('.ticket-send').trigger('click');
+        event.preventDefault();
+        $(this).css('height', '47px');
+        setTimeout(function() { 
+            var container = $('.ticket__messages');
+            container.scrollTop(container.prop('scrollHeight'));
+        }, 1000);
+        setTimeout(function() { 
+            var container = $('.ticket__messages');
+            container.scrollTop(container.prop('scrollHeight'));
+        }, 2500);
+    }
+});
+$(document).on("keydown",".ticket-send__img",function(event) {
+    setTimeout(function() { 
+        var container = $('.ticket__messages');
+        container.scrollTop(container.prop('scrollHeight'));
+    }, 1000);
+    setTimeout(function() { 
+        var container = $('.ticket__messages');
+        container.scrollTop(container.prop('scrollHeight'));
+    }, 2500);
+});
+
+
+

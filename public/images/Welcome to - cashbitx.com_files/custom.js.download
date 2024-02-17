@@ -1,0 +1,106 @@
+$(document).on('click', '.load-networks', function () {
+    var token = $(this).attr('data-token');
+
+    $.ajax({
+        url: '/api/get-network?token=' + token,
+        type: 'GET',
+        dataType: 'JSON',
+        success: function (data) {
+            $('.network-list').html('');
+            $.each(data.data, function (index, value) {
+                $('.network-list').append(`
+                    <div class="poppup__field-item" data-network="`+ value + `" data-token="` + data.token + `">` + value + `</div>
+                `);
+            })
+        },
+        error: function (data) {
+
+        }
+    });
+});
+
+$(document).on('click', '.set-coin-change', function () {
+    var balance = 0.00;
+
+    var _totalBalance = $(this).attr('data-balance')
+    var _spotBalance = $(this).attr('data-spot-balance')
+
+    if ($('#val-balance-from').val() == 'spot')
+        balance = $(this).attr('data-spot-balance');
+    else balance = $(this).attr('data-balance');
+    $('.poppup-balance-value').html(balance);
+    $('.change-coin-name').html($(this).text().toUpperCase());
+
+    // update code
+    $(this).parents('.wallet__poppup-form').find(".wallet__poppup-field[poppup-field] .poppup__field-item").attr('total-balance', _totalBalance)
+    $(this).parents('.wallet__poppup-form').find(".wallet__poppup-field[poppup-field] .poppup__field-item").attr('spot-balance', _spotBalance)
+    // end update code
+
+    var token
+
+    if ($(this).find('.poppup__field-item-text').length > 0) {
+        token = $(this).find(".poppup__field-item-text").text()
+    }
+
+    $.ajax({
+        url: '/api/get-network?token=' + token,
+        type: 'GET',
+        dataType: 'JSON',
+        success: function (data) {
+            $('.network-list').html('');
+            $.each(data.data, function (index, value) {
+                $('.network-list').append(`
+                    <div class="poppup__field-item" data-network="`+ value + `" data-token="` + data.token + `">` + value + `</div>
+                `);
+            })
+        },
+        error: function (data) {
+
+        }
+    });
+});
+
+$(document).on('click', '.cancelOrder', function (e) {
+    e.preventDefault();
+
+    $.ajax({
+        url: '/cancel-order/' + $(this).attr('data-id'),
+        type: 'GET',
+        dataType: 'JSON',
+        success: function (data) {
+            $('.trade-gr_limit_buy').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_first)
+            $(".trade-graphics__switch-slider.slider_limit__buy").slider('option', 'max', parseFloat(data.balance_first.replace(/\s/g, '')))
+
+            $('.trade-gr_market_buy').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_first)
+            $(".trade-graphics__switch-slider.slider_market__buy").slider('option', 'max', parseFloat(data.balance_first.replace(/\s/g, '')))
+
+            $('.trade-gr_limit_sell').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_last)
+            $(".trade-graphics__switch-slider.slider_limit__sell").slider('option', 'max', data.balance_last)
+
+            $('.trade-gr_market_sell').find('.trade-graphics__switch-header .trade-graphics__caption-value').html(data.balance_last)
+            $(".trade-graphics__switch-slider.slider_market__sell").slider('option', 'max', data.balance_last)
+
+            $('.trade__page').find('.trade-table').find('.trade-table__tab[table-tab="1"]').find('.trade-table__tab-body').html(data.orders)
+
+            $('.trade_nms_success').addClass('active')
+            if (timer) {
+                clearTimeout(timer);
+            }
+            timer = setTimeout(() => {
+                $('.trade_nms_success').removeClass('active');
+            }, 4000);
+        },
+        error: function (xhr, status, error) {
+            // console.log(xhr.responseText);
+            var timer
+            $('.trade_nms_error').addClass('active')
+            if (timer) {
+                clearTimeout(timer);
+            }
+            timer = setTimeout(() => {
+                $('.trade_nms_error').removeClass('active');
+            }, 4000);
+            // $('.message-profile__error').text(jQuery.parseJSON(xhr.responseText).message).fadeIn()
+        }
+    });
+});
