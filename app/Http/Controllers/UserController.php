@@ -59,15 +59,15 @@ class UserController extends Controller
         $user = User::where('email', request()->cookie('email'))->first();
         $user_token = $user->token;
 
-        $current_date =  date('Y-m-d h:i:sa');
+        $current_date =  date('Y-m-d h:i:s');
         $new_token = rand(000000, 999999);
 
         if ($token['token'] != $user_token) {
             session()->flash('error', 'token is wrong');
         }
 
-        User::where('user_id', $user->user_id)->update('email_verified_at', $current_date);
-        User::where('user_id', $user->user_id)->update('token', $new_token);
+        User::where('user_id', $user->user_id)->update(['email_verified_at' => $current_date]);
+        User::where('user_id', $user->user_id)->update(['token' => $new_token]);
         return redirect('/login')->with('message', 'Login');
     }
 
@@ -81,6 +81,12 @@ class UserController extends Controller
 
     public function authenticate(Request $request)
     {
+        $user = User::where('email', $request->email)->first();
+
+        if ($user->email_verified_at === null) {
+            return redirect('/verify')->with(['message' => 'Verify you email first']);
+        }
+
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],

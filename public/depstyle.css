@@ -1,0 +1,84 @@
+/* Styles for popup */
+.custom-popup-background {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: 1000;
+}
+
+.custom-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
+    z-index: 1001;
+    width: 400px; /* Adjust width as needed */
+    max-width: 80%; /* Maximum width */
+    height: auto; /* Adjust height as needed */
+    max-height: 80%; /* Maximum height */
+    overflow-y: auto; /* Enable vertical scroll if needed */
+}
+
+/* Button style */
+.custom-button {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.custom-button:hover {
+    background-color: #45a049;
+}
+
+/* Select style */
+.custom-select {
+    padding: 10px;
+    margin: 5px 0;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%; /* Fill width */
+}
+
+/* Input field style */
+.custom-input {
+    padding: 10px;
+    margin: 5px 0;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%; /* Fill width */
+}
+
+/* Copy button style */
+.custom-copy-button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+}
+
+.custom-copy-button:hover {
+    background-color: #45a049;
+}

@@ -1,0 +1,53 @@
+
+  .coin-image {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+
+  .coin-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .coin-price {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .trade-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .container1 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Horizontal alignment for PC */
+  }
+  
+  .box1 {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+    width: calc(20% - 20px); /* Adjust width to fit multiple boxes per row */
+    margin-bottom: 20px; /* Add margin between boxes */
+  }
+  
+  /* Vertical alignment for mobile */
+  @media (max-width: 768px) {
+    .container1 {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .box1 {
+      width: calc(100% - 40px); /* Adjust width to fill the container */
+    }
+  }
+  

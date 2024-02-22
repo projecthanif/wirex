@@ -11,12 +11,49 @@
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" type="">
+    <link rel="shortcut icon" href="images/favicon (2).png" type="">
+    <link rel="stylesheet" href="assests.css">
+    <style>
+        .coin-list {
+            position: absolute;
+            right: 2%;
+            bottom: 80px;
+            display: flex;
+            align-items: center;
+            margin-bottom: -20px;
+
+
+
+
+        }
+
+        .coin {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            margin: 0 15px;
+            color: #ff960b;
+            border: 1px solid #fff;
+            padding-left: 10px;
+            padding-right: 10px;
+            border-radius: 8px;
+
+        }
+
+        .coin img {
+            width: 20px;
+            margin-right: 10px;
+        }
+
+        .coin h3 {
+            color: white;
+        }
+    </style>
 
     <title>Wirex exchange</title>
 
     <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
 
     <!-- fonts style -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -32,6 +69,8 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
     <!-- responsive style -->
     <link href="{{ asset('css/responsive.css') }}" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <style>
         .slider_section {
             font-size: large;
@@ -39,6 +78,61 @@
 
         .detail-box {
             font-size: large;
+        }
+
+        .crypto-box {
+            max-width: 100%;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .crypto-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .crypto-list li {
+            width: calc(20% - 20px);
+            margin-bottom: 10px;
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        .crypto-list li img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 5px;
+        }
+
+        .crypto-list li .crypto-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .crypto-list li .crypto-price {
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .crypto-list li {
+                width: calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .crypto-list li {
+                width: 100%;
+            }
         }
     </style>
 
@@ -71,15 +165,15 @@
                     </button>
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav  ">
+                        <ul class="navbar-nav">
                             <li class="nav-item active">
                                 <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                             </li>
-                            {{-- <li class="nav-item">
-                                <a class="nav-link" href="about.html"> About</a>
-                            </li> --}}
                             <li class="nav-item">
-                                <a class="nav-link" href="/service">Services</a>
+                                <a class="nav-link" href="#above"> About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#services">Services</a>
                             </li>
 
 
@@ -121,7 +215,7 @@
                                             Sign up.
                                         </p>
                                         <div class="btn-box">
-                                            <a href="signup.html" class="btn1"
+                                            <a href="/signup" class="btn1"
                                                 style="background-color: rgb(201, 107, 0); ">
                                                 Start Trading
                                             </a>
@@ -150,7 +244,7 @@
                                             safeguarding your digital assets and personal information is paramount.
                                         </p>
                                         <div class="btn-box">
-                                            <a href="signup.html" class="btn1"
+                                            <a href="/signup" class="btn1"
                                                 style="background-color: rgb(201, 107, 0);;">
                                                 Start Trading
                                             </a>
@@ -180,7 +274,7 @@
                                             experience.
                                         </p>
                                         <div class="btn-box">
-                                            <a href="signup.html" class="btn1"
+                                            <a href="/signup" class="btn1"
                                                 style="background-color: rgb(201, 107, 0);;">
                                                 Start Trading
                                             </a>
@@ -196,37 +290,63 @@
                         </div>
                     </div>
                 </div>
-                <ol class="carousel-indicators">
-                    <li data-target="#customCarousel1" data-slide-to="0" class="active"></li>
-                    <li data-target="#customCarousel1" data-slide-to="1"></li>
-                    <li data-target="#customCarousel1" data-slide-to="2"></li>
-                </ol>
-            </div>
+                <!--
+        <ol class="carousel-indicators">
+          <li data-target="#customCarousel1" data-slide-to="0" class="active"></li>
+          <li data-target="#customCarousel1" data-slide-to="1"></li>
+          <li data-target="#customCarousel1" data-slide-to="2"></li>
 
-        </section>
-        <!-- end slider section -->
+        -->
+
+                </ol>
+
+
+
+            </div>
     </div>
 
-    <center><a href="index.html">
+    </section>
+    <!-- end slider section -->
+    </div>
 
-            <!-- TradingView Widget BEGIN -->
-            <div class="tradingview-widget-container">
-                <div class="tradingview-widget-container__widget"></div>
-                <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/"
-                        rel="noopener nofollow" target="_blank"><span class="blue-text"></span></a></div>
-                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
-                    {
-                        "width": 1000,
-                        "height": 490,
-                        "defaultColumn": "overview",
-                        "screener_type": "crypto_mkt",
-                        "displayCurrency": "USD",
-                        "colorTheme": "light",
-                        "locale": "en"
-                    }
-                </script>
-            </div>
-        </a>
+    <div class="crypto-box">
+        <ul class="crypto-list">
+            <li>
+                <div class="crypto-info">
+                    <img src="{{ asset('images/images/bitcoin.png') }}" alt="Crypto 1">
+                    <span>Bitcoin</span>
+                    <h3>$ <span id="bitcoin1"></span></h3>
+                </div>
+            </li>
+            <li>
+                <div class="crypto-info">
+                    <img src="{{ asset('images/images/ethereum.png') }}" alt="Crypto 2">
+                    <span>Ethereum</span>
+                    <h3>$ <span id="ethereum1"></span></h3>
+
+                </div>
+            </li>
+            <li>
+                <div class="crypto-info">
+                    <img src="{{ asset('images/images/dogecoin.png') }}" alt="Crypto 3">
+                    <span>dogecoin</span>
+                    <h3>$ <span id="dogecoin1"></span></h3>
+
+                </div>
+            </li>
+            <li>
+                <div class="crypto-info">
+                    <img src="{{ asset('images/images/bnb (1).png') }}" alt="Crypto 4">
+                    <span>litecoin</span>
+                    <h3>$ <span id="litecoin1"></span></h3>
+
+
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    </div>
     </center>
     <!-- TradingView Widget END -->
     <!-- service section -->
@@ -320,6 +440,77 @@
     <script></script>
 
     <!-- end service section -->
+    <!--list of 10  more coins-->
+    <div class="container1">
+        <div class="box1">
+            <img class="coin-image" src="images/images/card.png" alt="Bitcoin">
+            <div class="coin-name">Cardano (ADA) </div>
+            <br>
+            <button class="trade-button">Trade</button>
+        </div>
+        <div class="box1">
+            <img class="coin-image" src="images/images/solana.png" alt="Ethereum">
+            <div class="coin-name">Solana (SOL)</div>
+            <br>
+            <button class="trade-button">Trade</button>
+        </div>
+
+
+        <div class="box1">
+            <img class="coin-image" src="images/images/ripple.png" alt="Ethereum">
+            <div class="coin-name">Ripple (XRP)</div>
+            <br>
+            <button class="trade-button">Trade</button>
+        </div>
+
+        <div class="box1">
+            <img class="coin-image" src="images/images/pakadot.png" alt="Ethereum">
+            <div class="coin-name">Polkadot (DOT)</div>
+            <br>
+            <button class="trade-button">Trade</button>
+        </div>
+
+        <div class="box1">
+            <img class="coin-image" src="images/images/chainlink.png" alt="Ethereum">
+            <div class="coin-name">Chainlink (LINK)</div>
+            <br>
+            <button class="trade-button">Trade</button>
+        </div>
+
+        <div class="box1">
+            <img class="coin-image" src="images/images/avalanche.png" alt="Ethereum" width="20px">
+            <div class="coin-name">Avalanche </div>
+            <br>
+            <button class="trade-button">Trade</button>
+        </div>
+
+        <div class="box1">
+            <img class="coin-image" src="images/images/algorand-64.png" alt="Ethereum">
+            <div class="coin-name">Algorand (ALGO)</div>
+            <br>
+            <button class="trade-button">Trade</button>
+        </div>
+
+        <div class="box1">
+            <img class="coin-image" src="images/images/steller.png" alt="Ethereum">
+            <div class="coin-name">Stellar (XLM)</div>
+            <br>
+            <button class="trade-button">Trade</button>
+        </div>
+        <div class="box1">
+            <img class="coin-image" src="images/images/uniswap.png" alt="Ethereum">
+            <div class="coin-name">Uniswap (UNI)</div>
+            <br>
+            <button class="trade-button">Trade</button>
+        </div>
+        <div class="box1">
+            <img class="coin-image" src="images/images/terra.png" alt="Ethereum">
+            <div class="coin-name">Terra (LUNA)</div>
+            <br>
+            <button class="trade-button">Trade</button>
+        </div>
+        <!-- Add more boxes for other coins -->
+    </div>
 
 
     <!-- about section -->
@@ -335,7 +526,7 @@
             <div class="row">
                 <div class="col-md-6 ">
                     <div class="img-box">
-                        <img src="{{ asset('images/about-img.png') }}" alt="">
+                        <img src="images/about-img.png" alt="">
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -365,104 +556,116 @@
 
     <!-- end about section -->
 
-    < <!-- info section -->
-
-        <section class="info_section layout_padding2">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 col-lg-3 info_col">
-                        <div class="info_contact">
-                            <h4>
-
-                            </h4>
-                            <div class="contact_link_box">
-
-                                <span>
-
-                                </span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="info_social">
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3 info_col">
-                        <div class="info_detail">
-                            <h4>
-                                Info
-                            </h4>
-                            <p>
-                                necessary, making this the first true generator on the Internet. It uses a dictionary of
-                                over 200 Latin words, combined with a handful
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-2 mx-auto info_col">
-                        <div class="info_link_box">
-                            <h4>
-                                Links
-                            </h4>
-                            <div class="info_links">
-                                <a class="active" href="index.html">
-                                    Home
-                                </a>
-                                <a class="" href="about.html">
-                                    About
-                                </a>
-                                <a class="" href="service.html">
-                                    Services
-                                </a>
 
 
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3 info_col ">
+
+
+
+
+
+    <!-- info section -->
+
+    <section class="info_section layout_padding2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-lg-3 info_col">
+                    <div class="info_contact">
                         <h4>
-                            Subscribe
+
                         </h4>
-                        <form action="#">
-                            <input type="text" placeholder="Enter email" />
-                            <button type="submit">
-                                Subscribe
-                            </button>
-                        </form>
+                        <div class="contact_link_box">
+
+                            <span>
+
+                            </span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="info_social">
                     </div>
                 </div>
+                <div class="col-md-6 col-lg-3 info_col">
+                    <div class="info_detail">
+                        <h4>
+                            Info
+                        </h4>
+                        <p>
+                            necessary, making this the first true generator on the Internet. It uses a dictionary of
+                            over 200 Latin words, combined with a handful
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-2 mx-auto info_col">
+                    <div class="info_link_box">
+                        <h4>
+                            Links
+                        </h4>
+                        <div class="info_links">
+                            <a class="active" href="/">
+                                Home
+                            </a>
+                            <a class="" href="#about">
+                                About
+                            </a>
+                            <a class="" href="#services">
+                                Services
+                            </a>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 info_col ">
+                    <h4>
+                        Subscribe
+                    </h4>
+                    <form action="#">
+                        <input type="text" placeholder="Enter email" />
+                        <button type="submit">
+                            Subscribe
+                        </button>
+                    </form>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- end info section -->
+    <!-- end info section -->
 
-        <!-- footer section -->
-        <section class="footer_section">
-            <div class="container">
-                <p>
-                    &copy; <span id="displayYear"></span> All Rights Reserved By
-                    <a href="https://wirexexchange.com/">Wirex-Exchange</a>
-                </p>
-            </div>
-        </section>
-        <!-- footer section -->
+    <!-- footer section -->
+    <section class="footer_section">
+        <div class="container">
+            <p>
+                &copy; <span id="displayYear"></span> All Rights Reserved By
+                <a href="https://wirexexchange.com/">Wirex-Exchange</a>
+            </p>
+        </div>
+    </section>
+    <!-- footer section -->
 
-        <!-- jQery -->
-        <script type="text/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
-        <!-- popper js -->
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-        </script>
-        <!-- bootstrap js -->
-        <script type="text/javascript" src="{{ asset('js/bootstrap.js') }}"></script>
-        <!-- owl slider -->
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
-        </script>
-        <!-- custom js -->
-        <script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
-        <!-- Google Map -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
-        </script>
-        <!-- End Google Map -->
-
+    <!-- jQery -->
+    <script type="text/javascript" src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+    <!-- popper js -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <!-- bootstrap js -->
+    <script type="text/javascript" src="{{ asset('js/bootstrap.js') }}"></script>
+    <!-- owl slider -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+    </script>
+    <!-- custom js -->
+    <script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
+    <!-- Google Map -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
+    </script>
+    <!-- End Google Map -->
+    <!--
+  script for live api crypto
+-->
+    <script src="{{ asset('script.js') }}"></script>
+    <script src="{{ asset('coins.js') }}"></script>
+    <script src="{{ asset('10coins.js') }}"></script>
 </body>
 
 </html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crypto Asset Balance</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px;
+  }
+
+  .asset-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .asset-item {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .asset-details {
+    display: flex;
+    align-items: center;
+  }
+
+  .asset-name {
+    font-size: 20px;
+    color: #333;
+    margin-right: 20px;
+  }
+
+  .asset-balance {
+    font-size: 20px;
+    color: #333;
+    margin-right: 20px;
+  }
+
+  .logo {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+
+  .buttons {
+    display: flex;
+    align-items: center;
+  }
+
+  .button {
+    background-color:gold;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .button:hover {
+    background-color: #0056b3;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <ul class="asset-list">
+    <li class="asset-item">
+      <div class="asset-details">
+        <img class="logo" src="bitcoin-logo.svg" alt="Bitcoin Logo">
+        <span class="asset-name">Bitcoin (BTC)</span>
+      </div>
+      <span class="asset-balance">$0.00</span>
+      <div class="buttons">
+        <button class="button">Deposit</button>
+        <button class="button">Withdraw</button>
+        <button class="button">Transfer</button>
+      </div>
+    </li>
+    <li class="asset-item">
+      <div class="asset-details">
+        <img class="logo" src="ethereum-logo.svg" alt="Ethereum Logo">
+        <span class="asset-name">Ethereum (ETH)</span>
+      </div>
+      <span class="asset-balance">$0.00</span>
+      <div class="buttons">
+        <button class="button">Deposit</button>
+        <button class="button">Withdraw</button>
+        <button class="button">Transfer</button>
+      </div>
+    </li>
+    <li class="asset-item">
+      <div class="asset-details">
+        <img class="logo" src="ripple-logo.svg" alt="Ripple Logo">
+        <span class="asset-name">Ripple (XRP)</span>
+      </div>
+      <span class="asset-balance">$0.00</span>
+      <div class="buttons">
+        <button class="button">Deposit</button>
+        <button class="button">Withdraw</button>
+        <button class="button">Transfer</button>
+      </div>
+    </li>
+    <li class="asset-item">
+      <div class="asset-details">
+        <img class="logo" src="litecoin-logo.svg" alt="Litecoin Logo">
+        <span class="asset-name">Litecoin (LTC)</span>
+      </div>
+      <span class="asset-balance">$0.00</span>
+      <div class="buttons">
+        <button class="button">Deposit</button>
+        <button class="button">Withdraw</button>
+        <button class="button">Transfer</button>
+      </div>
+    </li>
+    <li class="asset-item">
+      <div class="asset-details">
+        <img class="logo" src="bitcoin-cash-logo.svg" alt="Bitcoin Cash Logo">
+        <span class="asset-name">Bitcoin Cash (BCH)</span>
+      </div>
+      <span class="asset-balance">$0.00</span>
+      <div class="buttons">
+        <button class="button">Deposit</button>
+        <button class="button">Withdraw</button>
+        <button class="button">Transfer</button>
+      </div>
+    </li>
+    <li class="asset-item">
+      <div class="asset-details">
+        <img class="logo" src="cardano-logo.svg" alt="Cardano Logo">
+        <span class="asset-name">Cardano (ADA)</span>
+      </div>
+      <span class="asset-balance">$0.00</span>
+      <div class="buttons">
+        <button class="button">Deposit</button>
+        <button class="button">Withdraw</button>
+        <button class="button">Transfer</button>
+      </div>
+    </li>
+    <li class="asset-item">
+      <div class="asset-details">
+        <img class="logo" src="stellar-logo.svg" alt="Stellar Logo">
+        <span class="asset-name">Stellar (XLM)</span>
+      </div>
+      <span class="asset-balance">$0.00</span>
+      <div class="buttons">
+        <button class="button">Deposit</button>
+        <button class="button">Withdraw</button>
+        <button class="button">Transfer</button>
+      </div>
+    </li>
+    <li class="asset-item">
+      <div class="asset-details">
+        <img class="logo" src="chainlink-logo.svg" alt="Chainlink Logo">
+        <span class="asset-name">Chainlink (LINK)</span>
+      </div>
+      <span class="asset-balance">$0.00</span>
+      <div class="buttons">
+        <button class="button">Deposit</button>
+        <button class="button">Withdraw</button>
+        <button class="button">Transfer</button>
+      </div>
+    </li>
+    <li class="asset-item">
+      <div class="asset-details">
+        <img class="logo" src="polkadot-logo.svg" alt="Polkadot Logo">
+        <span class="asset-name">Polkadot (DOT)</span>
+      </div>
+      <span class="asset-balance">$0.00</span>
+      <div class="buttons">
+        <button class="button">Deposit</button>
+        <button class="button">Withdraw</button>
+        <button class="button">Transfer</button>
+      </div>
+    </li>
+    <li class="asset-item">
+      <div class="asset-details">
+        <img class="logo" src="bitcoin-sv-logo.svg" alt="Bitcoin SV Logo">
+        <span class="asset-name">Bitcoin SV (BSV)</span>
+      </div>
+      <span class="asset-balance">$0.00</span>
+      <div class="buttons">
+        <button class="button">Deposit</button>
+        <button class="button">Withdraw</button>
+        <button class="button">Transfer</button>
+      </div>
+    </li>
+  </ul>
+</div>
+
+</body>
+</html>
