@@ -123,17 +123,27 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('users.forget');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function sendResetMail(Request $request, User $user)
     {
-        //
+        $validated = $request->validate([
+            'email' => ['required', 'email']
+        ]);
+        $token = $user->where('email', $validated['email'])->first()->token;
+
+        $mail = Mail::to($validated['email'])->send(new VerifyEmail($token));
+
+        redirect(route('forget.reset'))->session()->flash('message', 'reset password');
     }
 
+    public function resetPage()
+    {
+    }
     /**
      * Remove the specified resource from storage.
      */

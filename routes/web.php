@@ -20,14 +20,20 @@ Route::get('/', function () {
 });
 
 
-Route::get('/login', [UserController::class, 'login']);
+Route::get('/login', [UserController::class, 'login'])->middleware('guest');
 Route::post('/login', [UserController::class, 'authenticate']);
 
-Route::get('/signup', [UserController::class, 'create']);
+Route::get('/signup', [UserController::class, 'create'])->middleware('guest');
 Route::post('/signup', [UserController::class, 'store']);
 
-Route::get('/verify', [UserController::class, 'verifyPage']);
+Route::get('/verify', [UserController::class, 'verifyPage'])->middleware('guest');
 Route::post('/verify', [UserController::class, 'verify']);
+
+Route::get('/forget', [UserController::class, 'edit']);
+Route::post('/forget', [UserController::class, 'resetMail']);
+
+Route::get('/forget', [UserController::class, 'resetPage'])->name('forget.reset');
+Route::post('/forget', [UserController::class, 'update'])->name('forget.update');
 
 Route::get('/logout', [UserController::class, 'logout']);
 
