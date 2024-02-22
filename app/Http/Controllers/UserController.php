@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Mail\VerifyEmail;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -30,9 +33,22 @@ class UserController extends Controller
         $validated['user_id'] = uuid_create();
 
         $user = User::create($validated);
-        // auth()->login($user);
 
-        return redirect('/verify')->with('message', 'User Registered succefully, Verify your email');
+        $mail = Mail::to($validated['email'])->send(new VerifyEmail($validated['token']));
+        if ($mail) {
+            cookie()->queue(cookie()->forever('email', $validated['email']));
+            return redirect('/verify')->with([
+                'message', 'User Registered Succefully'
+            ]);
+        }
+        dd($mail);
+    }
+
+    public function verifyPage()
+    {
+        return view('users.verify', [
+            'email' => request()->cookie('email'),
+        ]);
     }
 
     public function verify(Request $request)
@@ -40,10 +56,19 @@ class UserController extends Controller
         $token = $request->validate([
             'token' => ['min:6', 'max:6']
         ]);
-        $user_token = auth()->user()->token;
+        $user = User::where('email', request()->cookie('email'))->first();
+        $user_token = $user->token;
 
-        if ($token === $token) {
+        $current_date =  date('Y-m-d h:i:sa');
+        $new_token = rand(000000, 999999);
+
+        if ($token['token'] != $user_token) {
+            session()->flash('error', 'token is wrong');
         }
+
+        User::where('user_id', $user->user_id)->update('email_verified_at', $current_date);
+        User::where('user_id', $user->user_id)->update('token', $new_token);
+        return redirect('/login')->with('message', 'Login');
     }
 
     /**
@@ -56,20 +81,35 @@ class UserController extends Controller
 
     public function authenticate(Request $request)
     {
-        $formField = $request->validate([
-            'name' => 'required',
-            'password' => 'required'
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
         ]);
-        
-        dd(auth()->attempt($formField));
+
+        if (Auth::attempt($credentials, true)) {
+            $request->session()->regenerate();
+
+            return redirect()->intended('/dashboard');
+        }
+
+        return back()->withErrors([
+            'name' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function logout(Request $request)
     {
-        //
+        auth()->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // dd($request->session()->regenerateToken());
+
+        return redirect('/')->with('message', 'You have been logged out!');
     }
 
     /**
