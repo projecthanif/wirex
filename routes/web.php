@@ -30,10 +30,9 @@ Route::get('/verify', [UserController::class, 'verifyPage'])->middleware('guest'
 Route::post('/verify', [UserController::class, 'verify']);
 
 Route::get('/forget', [UserController::class, 'edit']);
-Route::post('/forget', [UserController::class, 'resetMail']);
+Route::post('/forget', [UserController::class, 'sendResetMail']);
 
-Route::get('/forget', [UserController::class, 'resetPage'])->name('forget.reset');
-Route::post('/forget', [UserController::class, 'update'])->name('forget.update');
+Route::get('/forget/send', [UserController::class, 'update'])->name('forget.update');
 
 Route::get('/logout', [UserController::class, 'logout']);
 

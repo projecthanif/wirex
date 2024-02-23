@@ -134,15 +134,25 @@ class UserController extends Controller
         $validated = $request->validate([
             'email' => ['required', 'email']
         ]);
-        $token = $user->where('email', $validated['email'])->first()->token;
+        $find = $user->where(['email' => $validated['email']])->get();
+
+        if (count($find) === 0) {
+            return redirect('/signup')->with('message', 'Sign up');
+        }
+
+        $first = $user->where('email', $validated['email'])->first();
+        $token = $first->token;
+        $email = $first->email;
+        $link = "https://127.0.0.1:8000/forget/send?email={$email}&token={$token}";
 
         $mail = Mail::to($validated['email'])->send(new VerifyEmail($token));
 
-        redirect(route('forget.reset'))->session()->flash('message', 'reset password');
+        redirect(route('forget.reset'))->with('message', 'reset password');
     }
 
-    public function resetPage()
+    public function update(Request $request)
     {
+        dd($request->all());
     }
     /**
      * Remove the specified resource from storage.
