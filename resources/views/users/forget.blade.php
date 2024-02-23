@@ -24,7 +24,7 @@
                 </div>
 
                 <div>
-                    <form action="" method="post">
+                    <form action="/forget" method="post">
                         @csrf
                         @method('POST')
                         <div class="flex flex-col space-y-4">

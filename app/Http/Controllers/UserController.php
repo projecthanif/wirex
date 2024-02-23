@@ -170,9 +170,18 @@ class UserController extends Controller
             'token' => 'min:6|max:6',
             'password' => 'required|confirmed   '
         ]);
-        $user = User::where(['email' => $validated['email']])->first();
-        dd($user);
+        $user = User::where(['email' => $validated['email']])->first()->id;
+
+        $token = rand(000000, 999999);
+        $password = bcrypt($validated['password']);
+
+        User::where(['email' => $validated['email']])
+            ->update(['token' => $token, 'password' => $password]);
+
+        return redirect('/login')->with(['message', 'Password reset login user']);
     }
+
+    
     /**
      * Remove the specified resource from storage.
      */
