@@ -17,7 +17,8 @@ class VerifyEmail extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        private string $token
+        private string $token,
+        private bool $bool
     ) {
         //
     }
@@ -41,7 +42,8 @@ class VerifyEmail extends Mailable
         return new Content(
             view: 'users.mail',
             with: [
-                'body' => $this->token
+                'body' => $this->token,
+                'link' => $this->bool
             ],
             // to:
         );

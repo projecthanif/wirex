@@ -512,13 +512,13 @@
                                 <tr>
                                     <td class="content-cell">
                                         <div class="f-fallback">
-                                            <center>
-                                                <img src="https://farmersmarketplace.ng/user/img/logo.png"
-                                                    alt="logo" class="desktop-logo"
-                                                    style="height: 4em !important" />
-                                            </center>
-                                            <br><br>
-                                            {{ $body }}
+                                            @if ($link === true)
+                                                <br><br>
+                                                <a href="{{ $body }}"> Click to reset password</a>
+                                            @else
+                                                <br><br>
+                                                {{ $body }}
+                                            @endif
                                             <!-- Action -->
                                             <table class="body-action" align="center" width="100%" cellpadding="0"
                                                 cellspacing="0" role="presentation">

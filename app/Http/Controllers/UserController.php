@@ -34,7 +34,7 @@ class UserController extends Controller
 
         $user = User::create($validated);
 
-        $mail = Mail::to($validated['email'])->send(new VerifyEmail("Your token {$validated['token']}"));
+        $mail = Mail::to($validated['email'])->send(new VerifyEmail("Your token {$validated['token']}", false));
         if ($mail) {
             cookie()->queue(cookie()->forever('email', $validated['email']));
             return redirect('/verify')->with([
@@ -143,9 +143,9 @@ class UserController extends Controller
         $first = $user->where('email', $validated['email'])->first();
         $token = $first->token;
         $email = $first->email;
-        $link = "<a href='https://127.0.0.1:8000/forget/send?email={$email}&token={$token}'>Click this link to reset your password</a>";
+        $link = env('APP_URL', 'http://127.0.0.1:8000')  . "/forget/send?email={$email}&token={$token}";
 
-        $mail = Mail::to($validated['email'])->send(new VerifyEmail($link));
+        $mail = Mail::to($validated['email'])->send(new VerifyEmail($link, true));
 
         return redirect(route('forget.reset'))->with('message', 'reset password');
     }
