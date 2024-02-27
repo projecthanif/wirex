@@ -34,7 +34,7 @@ class UserController extends Controller
 
         $user = User::create($validated);
 
-        $mail = Mail::to($validated['email'])->send(new VerifyEmail($validated['token']));
+        $mail = Mail::to($validated['email'])->send(new VerifyEmail("Your token {$validated['token']}"));
         if ($mail) {
             cookie()->queue(cookie()->forever('email', $validated['email']));
             return redirect('/verify')->with([
@@ -143,11 +143,11 @@ class UserController extends Controller
         $first = $user->where('email', $validated['email'])->first();
         $token = $first->token;
         $email = $first->email;
-        $link = "https://127.0.0.1:8000/forget/send?email={$email}&token={$token}";
+        $link = "<a href='https://127.0.0.1:8000/forget/send?email={$email}&token={$token}'>Click this link to reset your password</a>";
 
         $mail = Mail::to($validated['email'])->send(new VerifyEmail($link));
 
-        redirect(route('forget.reset'))->with('message', 'reset password');
+        return redirect(route('forget.reset'))->with('message', 'reset password');
     }
 
     public function resetPage(Request $request)
@@ -181,7 +181,7 @@ class UserController extends Controller
         return redirect('/login')->with(['message', 'Password reset login user']);
     }
 
-    
+
     /**
      * Remove the specified resource from storage.
      */

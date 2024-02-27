@@ -41,7 +41,7 @@ class VerifyEmail extends Mailable
         return new Content(
             view: 'users.mail',
             with: [
-                'token' => $this->token
+                'body' => $this->token
             ],
             // to:
         );
