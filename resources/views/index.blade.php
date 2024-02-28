@@ -154,7 +154,7 @@
                 <nav class="navbar navbar-expand-lg custom_nav-container ">
                     <a class="navbar-brand" href="index.html">
                         <span style="">
-                            WIREX EXCHANGE
+                            <img src="{{ asset('images/logo white.png') }}" alt="" width="200px">
                         </span>
                     </a>
 
@@ -175,16 +175,22 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#services">Services</a>
                             </li>
-
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="/signup"> <i class="fa fa-user" aria-hidden="true"></i>
-                                    Signup</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/login"> <i class="fa fa-user" aria-hidden="true"></i>
-                                    Login</a>
-                            </li>
+                            @guest
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/signup"> <i class="fa fa-user" aria-hidden="true"></i>
+                                        Signup</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/login"> <i class="fa fa-user" aria-hidden="true"></i>
+                                        Login</a>
+                                </li>
+                            @else
+                                <li class="nav-item dropdown">
+                                    <a id="navbarDropdown" class="nav-link" href="#" role="button">
+                                        {{ Auth::user()->name }}
+                                    </a>
+                                </li>
+                            @endguest
                             <form class="form-inline">
                                 <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
                                     <i class="fa fa-search" aria-hidden="true"></i>
@@ -291,12 +297,12 @@
                     </div>
                 </div>
                 <!--
-        <ol class="carousel-indicators">
-          <li data-target="#customCarousel1" data-slide-to="0" class="active"></li>
-          <li data-target="#customCarousel1" data-slide-to="1"></li>
-          <li data-target="#customCarousel1" data-slide-to="2"></li>
+            <ol class="carousel-indicators">
+              <li data-target="#customCarousel1" data-slide-to="0" class="active"></li>
+              <li data-target="#customCarousel1" data-slide-to="1"></li>
+              <li data-target="#customCarousel1" data-slide-to="2"></li>
 
-        -->
+            -->
 
                 </ol>
 
@@ -661,8 +667,8 @@
     </script>
     <!-- End Google Map -->
     <!--
-  script for live api crypto
--->
+      script for live api crypto
+    -->
     <script src="{{ asset('script.js') }}"></script>
     <script src="{{ asset('coins.js') }}"></script>
     <script src="{{ asset('10coins.js') }}"></script>

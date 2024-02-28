@@ -35,7 +35,7 @@ Route::post('/forget', [UserController::class, 'sendResetMail']);
 Route::get('/forget/send', [UserController::class, 'resetPage'])->name('forget.reset');
 Route::post('/forget/send', [UserController::class, 'update'])->name('forget.update');
 
-Route::get('/logout', [UserController::class, 'logout']);
+Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
 
 
