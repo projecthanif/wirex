@@ -75,9 +75,18 @@ class UserController extends Controller
         return redirect('/login')->with('message', 'Login');
     }
 
-    /**
-     * Display a listing of the resource.
-     */
+    public function resendToken(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => 'email'
+        ]);
+
+        $user = User::where('email', request()->cookie('email'))->first();
+        $user_token = $user->token;
+        Mail::to($validated['email'])->send(new VerifyEmail("Your token {$user_token}", false));
+        return back();
+    }
+
     public function login()
     {
         return view('users.login');

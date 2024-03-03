@@ -42,3 +42,5 @@ Route::get('/dashboard', [IndexController::class, 'index'])->name('dashboard')->
 Route::get('/voucherBalance', [IndexController::class, 'checkBalance']);
 Route::post('/checkVoucher', [IndexController::class, 'isVoucherAvailable']);
 Route::post('/checked', [IndexController::class, 'updateVoucher']);
+
+Route::get('/resend', [UserController::class, 'resendToken']);

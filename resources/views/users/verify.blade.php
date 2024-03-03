@@ -313,6 +313,11 @@
             display: block;
             color: red;
         }
+
+        #resend {
+            border: none;
+            background-color: inherit;
+        }
     </style>
 </head>
 
@@ -327,7 +332,9 @@
                 <img src="{{ asset('images/Colorful Gradient Background Man 3D Avatar.png') }}" id="icon"
                     alt="User Icon" />
             </div>
-
+            <div>
+                Token has been sent to your email: {{ $email }}
+            </div>
             <!-- Reset Form -->
             <form action="" method="POST">
                 @csrf
@@ -339,6 +346,13 @@
                 <input type="text" id="token" class="fadeIn third" name="token" placeholder="Token">
                 <input type="submit" class="fadeIn fourth" value="Verify">
             </form>
+            <!-- Remind Passowrd -->
+            <div id="formFooter">
+                <form action="/resend">
+                    <input type="hidden" name="email" value="{{ $email }}">
+                    <button class="underlineHover" id="resend">Resend Token</button>
+                </form>
+            </div>
         </div>
     </div>
 </body>
