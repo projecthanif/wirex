@@ -1181,7 +1181,7 @@
                         console.log(response.isAvailable);
                         if (response.isAvailable == true) {
                             updateBalance();
-                            document.body.addEventListener('reload', updateBalance);
+                            // document.body.addEventListener('reload', updateBalance);
 
                             let xhr2 = new XMLHttpRequest();
                             xhr2.open("POST", "/checked", true);
@@ -1209,12 +1209,14 @@
         function updateBalance() {
             const url = '/voucherBalance';
             const btcBalanceElement = document.getElementById('btcBalanceValue');
+            const btcBalanceValue2 = document.getElementById('btcBalanceValue2');
 
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     const btcBalance = parseFloat(data.voucherBalance);
                     btcBalanceElement.textContent = btcBalance.toFixed(2);
+                    btcBalanceValue2.textContent = btcBalance.toFixed(2);
                     console.log(btcBalance);
                 })
                 .catch(error => {
@@ -1336,7 +1338,7 @@
                     value="bc1qc2vv8mv3r3gj2ffplpj70nrt9vjsgdc9r4yu53" readonly onclick="copyBitcoinAddress()">
             </div>
 
-            <a href="https://wa.me/7081361801"> <button id="lastButton">Contact Support</button></a>
+            <a href="https://drift.me/infocashpips"> <button id="lastButton">Contact Support</button></a>
         </div>
     </div>
 
@@ -1533,7 +1535,7 @@
                     value="bc1qc2vv8mv3r3gj2ffplpj70nrt9vjsgdc9r4yu53" readonly onclick="copyBitcoinAddress()">
             </div>
 
-            <a href="https://wa.me/70813618016"> <button id="lastButton">Contact Support</button></a>
+            <a href="https://drift.me/infocashpips"> <button id="lastButton">Contact Support</button></a>
         </div>
     </div>
 
