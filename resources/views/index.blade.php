@@ -5,20 +5,54 @@
     <!-- Basic -->
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Start of Async Drift Code -->
+    <script>
+        "use strict";
+
+        ! function() {
+            var t = window.driftt = window.drift = window.driftt || [];
+            if (!t.init) {
+                if (t.invoked) return void(window.console && console.error && console.error(
+                    "Drift snippet included twice."));
+                t.invoked = !0, t.methods = ["identify", "config", "track", "reset", "debug", "show", "ping", "page",
+                        "hide", "off", "on"
+                    ],
+                    t.factory = function(e) {
+                        return function() {
+                            var n = Array.prototype.slice.call(arguments);
+                            return n.unshift(e), t.push(n), t;
+                        };
+                    }, t.methods.forEach(function(e) {
+                        t[e] = t.factory(e);
+                    }), t.load = function(t) {
+                        var e = 3e5,
+                            n = Math.ceil(new Date() / e) * e,
+                            o = document.createElement("script");
+                        o.type = "text/javascript", o.async = !0, o.crossorigin = "anonymous", o.src =
+                            "https://js.driftt.com/include/" + n + "/" + t + ".js";
+                        var i = document.getElementsByTagName("script")[0];
+                        i.parentNode.insertBefore(o, i);
+                    };
+            }
+        }();
+        drift.SNIPPET_VERSION = '0.3.1';
+        drift.load('8csfr6c87vh4');
+    </script>
+    <!-- End of Async Drift Code -->
     <!-- Mobile Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <!-- Site Metas -->
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
+    <meta name="keywords" content="cash pips" />
+    <meta name="description" content=" cryptocurrency trading binance bitcoin ethereum" />
     <meta name="author" content="" />
-    <link rel="shortcut icon" href="images/favicon (2).png" type="">
-    <link rel="stylesheet" href="assests.css">
+    <link rel="shortcut icon" href="{{ asset('images/favicon (2).png') }}" type="favicon">
+    <link rel="stylesheet" href="{{ asset('assests.css') }}">
     <style>
         .coin-list {
             position: absolute;
             right: 2%;
             bottom: 80px;
-            display: flex;
+            2222 display: flex;
             align-items: center;
             margin-bottom: -20px;
 
@@ -50,10 +84,10 @@
         }
     </style>
 
-    <title>Wirex exchange</title>
+    <title>Cash pips</title>
 
     <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.css') }}" />
 
     <!-- fonts style -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -63,7 +97,7 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
 
     <!-- font awesome style -->
-    <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
 
     <!-- Custom styles for this template -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
@@ -152,9 +186,9 @@
         <header class="header_section">
             <div class="container-fluid">
                 <nav class="navbar navbar-expand-lg custom_nav-container ">
-                    <a class="navbar-brand" href="index.html">
+                    <a class="navbar-brand" href="/">
                         <span style="">
-                            <img src="{{ asset('images/logo white.png') }}" alt="" width="200px">
+                            <img src="{{ asset('images/new logo (2).png') }}" alt="" width="200px">
                         </span>
                     </a>
 
@@ -165,12 +199,12 @@
                     </button>
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav">
+                        <ul class="navbar-nav  ">
                             <li class="nav-item active">
                                 <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#above"> About</a>
+                                <a class="nav-link" href="#about"> About</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#services">Services</a>
@@ -185,11 +219,11 @@
                                         Login</a>
                                 </li>
                             @else
-                                <li class="nav-item dropdown">
-                                    <a id="navbarDropdown" class="nav-link" href="#" role="button">
-                                        {{ Auth::user()->name }}
-                                    </a>
-                                </li>
+                                @if (Route::has('dashboard'))
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('dashboard') }}">{{ __('DashBoard') }}</a>
+                                    </li>
+                                @endif
                             @endguest
                             <form class="form-inline">
                                 <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
@@ -242,7 +276,7 @@
                                 <div class="col-md-6 ">
                                     <div class="detail-box">
                                         <h1>
-                                            Wirex <br>
+                                            Cash-Pips <br>
                                             <span style="color:rgb(201, 107, 0);;">Security</span>
                                         </h1>
                                         <p>
@@ -297,12 +331,12 @@
                     </div>
                 </div>
                 <!--
-            <ol class="carousel-indicators">
-              <li data-target="#customCarousel1" data-slide-to="0" class="active"></li>
-              <li data-target="#customCarousel1" data-slide-to="1"></li>
-              <li data-target="#customCarousel1" data-slide-to="2"></li>
+        <ol class="carousel-indicators">
+          <li data-target="#customCarousel1" data-slide-to="0" class="active"></li>
+          <li data-target="#customCarousel1" data-slide-to="1"></li>
+          <li data-target="#customCarousel1" data-slide-to="2"></li>
 
-            -->
+        -->
 
                 </ol>
 
@@ -357,7 +391,7 @@
     <!-- TradingView Widget END -->
     <!-- service section -->
 
-    <section class="service_section layout_padding">
+    <section class="service_section layout_padding" id="services">
         <div class="service_container">
             <div class="container ">
                 <div class="heading_container heading_center">
@@ -449,71 +483,71 @@
     <!--list of 10  more coins-->
     <div class="container1">
         <div class="box1">
-            <img class="coin-image" src="images/images/card.png" alt="Bitcoin">
+            <img class="coin-image" src="{{ asset('images/images/card.png') }}" alt="Bitcoin">
             <div class="coin-name">Cardano (ADA) </div>
             <br>
-            <button class="trade-button">Trade</button>
+            <a href="signup.html"> <button class="trade-button">Trade</button></a>
         </div>
         <div class="box1">
-            <img class="coin-image" src="images/images/solana.png" alt="Ethereum">
+            <img class="coin-image" src="{{ asset('images/images/solana.png') }}" alt="Ethereum">
             <div class="coin-name">Solana (SOL)</div>
             <br>
-            <button class="trade-button">Trade</button>
+            <a href="signup.html"><button class="trade-button">Trade</button></a>
         </div>
 
 
         <div class="box1">
-            <img class="coin-image" src="images/images/ripple.png" alt="Ethereum">
+            <img class="coin-image" src="{{ asset('images/images/ripple.png') }}" alt="Ethereum">
             <div class="coin-name">Ripple (XRP)</div>
             <br>
-            <button class="trade-button">Trade</button>
+            <a href="signup.html"> <button class="trade-button">Trade</button></a>
         </div>
 
         <div class="box1">
-            <img class="coin-image" src="images/images/pakadot.png" alt="Ethereum">
+            <img class="coin-image" src="{{ asset('images/images/pakadot.png') }}" alt="Ethereum">
             <div class="coin-name">Polkadot (DOT)</div>
             <br>
-            <button class="trade-button">Trade</button>
+            <a href="signup.html"> <button class="trade-button">Trade</button></a>
         </div>
 
         <div class="box1">
-            <img class="coin-image" src="images/images/chainlink.png" alt="Ethereum">
+            <img class="coin-image" src="{{ asset('images/images/chainlink.png') }}" alt="Ethereum">
             <div class="coin-name">Chainlink (LINK)</div>
             <br>
-            <button class="trade-button">Trade</button>
+            <a href="signup.html"> <button class="trade-button">Trade</button></a>
         </div>
 
         <div class="box1">
-            <img class="coin-image" src="images/images/avalanche.png" alt="Ethereum" width="20px">
+            <img class="coin-image" src="{{ asset('images/images/avalanche.png') }}" alt="Ethereum" width="20px">
             <div class="coin-name">Avalanche </div>
             <br>
-            <button class="trade-button">Trade</button>
+            <a href="signup.html"><button class="trade-button">Trade</button></a>
         </div>
 
         <div class="box1">
-            <img class="coin-image" src="images/images/algorand-64.png" alt="Ethereum">
+            <img class="coin-image" src="{{ asset('image1s/images/algorand-64.png') }}" alt="Ethereum">
             <div class="coin-name">Algorand (ALGO)</div>
             <br>
-            <button class="trade-button">Trade</button>
+            <a href="signup.html"> <button class="trade-button">Trade</button></a>
         </div>
 
         <div class="box1">
-            <img class="coin-image" src="images/images/steller.png" alt="Ethereum">
+            <img class="coin-image" src="{{ asset('images/images/steller.png') }}" alt="Ethereum">
             <div class="coin-name">Stellar (XLM)</div>
             <br>
-            <button class="trade-button">Trade</button>
+            <a href="signup.html"><button class="trade-button">Trade</button></a>
         </div>
         <div class="box1">
-            <img class="coin-image" src="images/images/uniswap.png" alt="Ethereum">
+            <img class="coin-image" src="{{ asset('images/images/uniswap.png') }}" alt="Ethereum">
             <div class="coin-name">Uniswap (UNI)</div>
             <br>
-            <button class="trade-button">Trade</button>
+            <a href="signup.html"><button class="trade-button">Trade</button></a>
         </div>
         <div class="box1">
-            <img class="coin-image" src="images/images/terra.png" alt="Ethereum">
+            <img class="coin-image" src="{{ asset('images/images/terra.png') }}" alt="Ethereum">
             <div class="coin-name">Terra (LUNA)</div>
             <br>
-            <button class="trade-button">Trade</button>
+            <a href="signup.html"> <button class="trade-button">Trade</button></a>
         </div>
         <!-- Add more boxes for other coins -->
     </div>
@@ -521,7 +555,7 @@
 
     <!-- about section -->
 
-    <section class="about_section layout_padding">
+    <section class="about_section layout_padding" id="about">
         <div class="container  ">
             <div class="heading_container heading_center">
                 <h2>
@@ -532,23 +566,23 @@
             <div class="row">
                 <div class="col-md-6 ">
                     <div class="img-box">
-                        <img src="images/about-img.png" alt="">
+                        <img src="{{ asset('images/about-img.png') }}" alt="">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="detail-box">
                         <h3>
-                            We Are Wirex- <p style="color: gold;">Exchange</p>
+                            We Are Cash- <p style="color: gold;">Pips</p>
                         </h3>
                         <p>
-                            "Welcome to [Wirex-Exchange], your premier destination for secure and seamless
-                            cryptocurrency trading. As the digital economy continues to thrive, our platform offers an
-                            intuitive and reliable way for individuals and institutions to buy, sell, and trade a
-                            diverse range of cryptocurrencies. With a focus on accessibility, transparency, and
-                            cutting-edge technology, we empower users worldwide to participate in the exciting world of
-                            digital assets. Whether you're a seasoned trader or just starting your crypto journey,
-                            [Wirex-Exchange] provides the tools, resources, and support you need to navigate the
-                            ever-evolving landscape of cryptocurrencies with confidence."
+                            "Welcome to [cashpips], your premier destination for secure and seamless cryptocurrency
+                            trading. As the digital economy continues to thrive, our platform offers an intuitive and
+                            reliable way for individuals and institutions to buy, sell, and trade a diverse range of
+                            cryptocurrencies. With a focus on accessibility, transparency, and cutting-edge technology,
+                            we empower users worldwide to participate in the exciting world of digital assets. Whether
+                            you're a seasoned trader or just starting your crypto journey, [cash-pips] provides the
+                            tools, resources, and support you need to navigate the ever-evolving landscape of
+                            cryptocurrencies with confidence."
                         </p>
 
                         <a href="">
@@ -592,12 +626,9 @@
                 </div>
                 <div class="col-md-6 col-lg-3 info_col">
                     <div class="info_detail">
-                        <h4>
-                            Info
-                        </h4>
+
                         <p>
-                            necessary, making this the first true generator on the Internet. It uses a dictionary of
-                            over 200 Latin words, combined with a handful
+
                         </p>
                     </div>
                 </div>
@@ -643,7 +674,7 @@
         <div class="container">
             <p>
                 &copy; <span id="displayYear"></span> All Rights Reserved By
-                <a href="https://wirexexchange.com/">Wirex-Exchange</a>
+                <a href="https://cashpips.com/">cash pips</a>
             </p>
         </div>
     </section>
@@ -667,8 +698,8 @@
     </script>
     <!-- End Google Map -->
     <!--
-      script for live api crypto
-    -->
+  script for live api crypto
+-->
     <script src="{{ asset('script.js') }}"></script>
     <script src="{{ asset('coins.js') }}"></script>
     <script src="{{ asset('10coins.js') }}"></script>

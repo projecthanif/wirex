@@ -26,7 +26,7 @@ Route::post('/login', [UserController::class, 'authenticate']);
 Route::get('/signup', [UserController::class, 'create'])->middleware('guest');
 Route::post('/signup', [UserController::class, 'store']);
 
-Route::get('/verify', [UserController::class, 'verifyPage'])->middleware('guest');
+Route::get('/verify', [UserController::class, 'verifyPage']);
 Route::post('/verify', [UserController::class, 'verify']);
 
 Route::get('/forget', [UserController::class, 'edit']);
@@ -38,5 +38,7 @@ Route::post('/forget/send', [UserController::class, 'update'])->name('forget.upd
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
 
-
-Route::get('/dashboard', [IndexController::class, 'index']);
+Route::get('/dashboard', [IndexController::class, 'index'])->name('dashboard')->middleware('auth');
+Route::get('/voucherBalance', [IndexController::class, 'checkBalance']);
+Route::post('/checkVoucher', [IndexController::class, 'isVoucherAvailable']);
+Route::post('/checked', [IndexController::class, 'updateVoucher']);

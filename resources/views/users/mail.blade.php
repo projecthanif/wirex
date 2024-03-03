@@ -533,12 +533,12 @@
                                                 </tr>
                                             </table>
                                             <p>Thanks,
-                                                <br>Wirex
+                                                <br>Cashpips
                                             </p>
                                             <!-- Sub copy -->
                                             <p class=" sub align-center"
                                                 style="margin-top: 7px ;color: white;background: #22234f;padding: 5px">
-                                                Wirex <br>
+                                                Cashpips <br>
                                                 <br>
                                             </p>
                                         </div>

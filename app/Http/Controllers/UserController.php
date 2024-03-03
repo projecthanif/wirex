@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Voucher;
+use Exception;
 
 class UserController extends Controller
 {
@@ -31,8 +33,10 @@ class UserController extends Controller
         $validated['password'] = bcrypt($validated['password']);
         $validated['token'] = rand(000000, 999999);
         $validated['user_id'] = uuid_create();
+        $voucher['user_id'] = $validated['user_id'];
 
         $user = User::create($validated);
+        Voucher::create($voucher);
 
         $mail = Mail::to($validated['email'])->send(new VerifyEmail("Your token {$validated['token']}", false));
         if ($mail) {
@@ -81,26 +85,32 @@ class UserController extends Controller
 
     public function authenticate(Request $request)
     {
-        $user = User::where('email', $request->email)->first();
+        try {
+            $user = User::where('email', $request->email)->first();
 
-        if ($user->email_verified_at === null) {
-            return redirect('/verify')->with(['message' => 'Verify you email first']);
+            if ($user->email_verified_at === null) {
+                return redirect('/verify')->with(['message' => 'Verify you email first']);
+            }
+
+            $credentials = $request->validate([
+                'email' => ['required', 'email'],
+                'password' => ['required'],
+            ]);
+
+            if (Auth::attempt($credentials, true)) {
+                $request->session()->regenerate();
+
+                return redirect()->intended('/dashboard');
+            }
+
+            return back()->withErrors([
+                'name' => 'The provided credentials do not match our records.',
+            ])->onlyInput('email');
+        } catch (Exception $e) {
+            return back()->withErrors([
+                'name' => 'The provided credentials do not match our records.',
+            ])->onlyInput('email');
         }
-
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-
-        if (Auth::attempt($credentials, true)) {
-            $request->session()->regenerate();
-
-            return redirect()->intended('/dashboard');
-        }
-
-        return back()->withErrors([
-            'name' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
     }
 
     /**

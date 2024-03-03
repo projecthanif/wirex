@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
+use App\Models\Voucher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class IndexController extends Controller
 {
@@ -15,51 +17,39 @@ class IndexController extends Controller
         return view('dashboard');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // Assuming you have a database connection established
+
+    // Check if the voucher is available for the current user
+
+    public function checkBalance()
     {
-        //
+        $balance = Voucher::where('user_id', auth()->user()->user_id)
+            ->get()->first()->voucher_balance;
+        // dd($balance);
+        
+        header('Content-Type: application/json');
+        echo json_encode(['voucherBalance' => $balance]);
+    }
+    public function isVoucherAvailable()
+    {
+        $isAvailable = Voucher::where('user_id', auth()
+            ->user()->user_id)->get()->first()->voucher;
+
+        if ($isAvailable === 'true') {
+            $isAvailable = true;
+        } else {
+            $isAvailable = false;
+        }
+        // Return JSON response
+        header('Content-Type: application/json');
+        echo json_encode(['isAvailable' => $isAvailable]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function updateVoucher()
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        Voucher::where('user_id', auth()->user()->user_id)
+            ->update(['voucher' => 'false']);
+        Voucher::where('user_id', auth()->user()->user_id)
+            ->update(['voucher_balance' => 0.18]);
     }
 }
