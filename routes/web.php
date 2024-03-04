@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Dashboard\IndexController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -44,3 +45,10 @@ Route::post('/checkVoucher', [IndexController::class, 'isVoucherAvailable']);
 Route::post('/checked', [IndexController::class, 'updateVoucher']);
 
 Route::get('/resend', [UserController::class, 'resendToken']);
+
+//ADMIN
+
+Route::get('/admin', [AdminController::class, 'login']);
+Route::post('/admin', [AdminController::class, 'verify']);
+
+Route::get('/admin/dashboard', [AdminController::class, 'index']);
