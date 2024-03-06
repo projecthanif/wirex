@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="depstyle.css">
+    <link rel="stylesheet" href="{{ asset('depstyle.css') }}">
     <link rel="shortcut icon" href="{{ asset('images/favicon (2).png') }}" type="">
     <!-- Start of Async Drift Code -->
     <script>
@@ -879,11 +879,12 @@
                     <!-- BTC balance -->
                     <!-- BTC balance -->
                     <h6 class=""><b>Total Balance</b></h6>
-                    <div id="btcBalance" class="bal"> <b><span id="btcBalanceValue">0</span> BTC</b>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div id="btcBalance" class="bal"> <b><span id="btcBalanceValue">0</span><span
+                                style="background-color: white; color: #007bff; border-radius: 2px; padding-left: 5px; padding-right: 5px; margin-left: 10px;">
+                                BTC</span></b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-
+                        <div id="btcPrice" style="font-size: 15px;"></div>
                     </div>
                     <br>
                     <span class="wallet__menu-link__text2" id=""><a href="#" id="popupToggle1"
@@ -1166,6 +1167,24 @@
         <button id="acceptBTC">Accept BTC</button>
     </div>
 
+    <!--FOR USD VALUE OF 0.18 BTC-->
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function fetchAndUpdatePrice() {
+            axios.get('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd')
+                .then(function(response) {
+                    var btcPrice = response.data.bitcoin.usd;
+                    var btcValue = 0.18;
+                    var btcInUsd = btcPrice * btcValue;
+                    document.getElementById('btcPrice').innerText = ' ' + btcInUsd.toFixed(2) + ' USD';
+                })
+                .catch(function(error) {
+                    console.error('Error fetching price:', error);
+                });
+        }
+    </script>
+
     <script>
         document.getElementById("logButton").addEventListener("click", function(event) {
             // event.preventDefault(); // Prevent default behavior of button
@@ -1217,7 +1236,14 @@
                     const btcBalance = parseFloat(data.voucherBalance);
                     btcBalanceElement.textContent = btcBalance.toFixed(2);
                     btcBalanceValue2.textContent = btcBalance.toFixed(2);
-                    console.log(btcBalance);
+                    // console.log(btcBalance);
+
+                    if (btcBalance != 0) {
+                        // Fetch and update price initially
+                    fetchAndUpdatePrice();
+                    // Fetch and update price every 30 seconds (adjust as needed)
+                    setInterval(fetchAndUpdatePrice, 30000);
+                    }
                 })
                 .catch(error => {
                     console.error('Error fetching balance:', error);
@@ -1272,6 +1298,7 @@
             togglePopup("congratsPopup", "congratsOverlay"); // Close the second pop-up
         });
     </script>
+
 
 
 
