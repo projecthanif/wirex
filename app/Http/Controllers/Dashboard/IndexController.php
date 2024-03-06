@@ -26,7 +26,7 @@ class IndexController extends Controller
         $balance = Voucher::where('user_id', auth()->user()->user_id)
             ->get()->first()->voucher_balance;
         // dd($balance);
-        
+
         header('Content-Type: application/json');
         echo json_encode(['voucherBalance' => $balance]);
     }

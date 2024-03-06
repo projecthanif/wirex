@@ -15,6 +15,13 @@ use Exception;
 class UserController extends Controller
 {
 
+    public function __construct()
+    {
+        if (auth()->check() === true) {
+            redirect('/');
+        }
+    }
+
     /**
      * Show the form for creating a new user.
      */

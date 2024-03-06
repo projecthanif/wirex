@@ -334,6 +334,9 @@
             <form action="/login" method="POST">
                 @csrf
                 @method('POST')
+                @error('name')
+                    <p style="color:red">{{ $message }}</p>
+                @enderror
                 <input type="text" id="User" class="fadeIn second" name="email" placeholder="Email ">
                 @error('email')
                     <p class="error">{{ $message }}</p>

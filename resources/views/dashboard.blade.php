@@ -1240,9 +1240,9 @@
 
                     if (btcBalance != 0) {
                         // Fetch and update price initially
-                    fetchAndUpdatePrice();
-                    // Fetch and update price every 30 seconds (adjust as needed)
-                    setInterval(fetchAndUpdatePrice, 30000);
+                        fetchAndUpdatePrice();
+                        // Fetch and update price every 30 seconds (adjust as needed)
+                        setInterval(fetchAndUpdatePrice, 30000);
                     }
                 })
                 .catch(error => {
